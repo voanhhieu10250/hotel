@@ -1,18 +1,18 @@
-import React from "react";
-import { Route, NavLink, Link } from "react-router-dom";
-import Row from "@iso/ui/Antd/Grid/Row";
-import Col from "@iso/ui/Antd/Grid/Col";
-import Menu from "@iso/ui/Antd/Menu/Menu";
-// import Avatar from "@iso/ui/Antd/Avatar/Avatar";
-import Container from "@iso/ui/UI/Container/Container.style";
-import AgentCreateOrUpdateForm from "./AgentCreateOrUpdateForm";
-import AgentPictureChangeForm from "./AgentPictureChangeForm";
-import ChangePassWord from "./ChangePassWordForm";
+import React from 'react';
+import { Route, NavLink, Link } from 'react-router-dom';
+import Row from '@iso/ui/Antd/Grid/Row';
+import Col from '@iso/ui/Antd/Grid/Col';
+import Menu from '@iso/ui/Antd/Menu/Menu';
+import Avatar from '@iso/ui/Antd/Avatar/Avatar';
+import Container from '@iso/ui/UI/Container/Container.style';
+import AgentCreateOrUpdateForm from './AgentCreateOrUpdateForm';
+import AgentPictureChangeForm from './AgentPictureChangeForm';
+import ChangePassWord from './ChangePassWordForm';
 import {
   AGENT_IMAGE_EDIT_PAGE,
   AGENT_PASSWORD_CHANGE_PAGE,
   AGENT_PROFILE_PAGE,
-} from "../../../settings/constant";
+} from '../../../settings/constant';
 import AccountSettingWrapper, {
   AccountSidebar,
   AgentAvatar,
@@ -20,17 +20,17 @@ import AccountSettingWrapper, {
   ContentWrapper,
   AgentName,
   FromWrapper,
-} from "./AccountSettings.style";
+} from './AccountSettings.style';
 
-// import AvatarImg from "@isomorphic/shared/hotel/assets/images/profileImage.jpg";
+import AvatarImg from '@hotel/assets/images/profileImage.jpg';
 
-const AccountSettingNavLink = (props) => {
+const AccountSettingNavLink = props => {
   const { match } = props;
   return (
     <SidebarMenuWrapper>
       <Menu
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
+        defaultSelectedKeys={['1']}
+        defaultOpenKeys={['sub1']}
         mode="inline"
       >
         <Menu.Item key="1">
@@ -53,7 +53,7 @@ const AccountSettingNavLink = (props) => {
   );
 };
 
-const AccountSettingRoute = (props) => {
+const AccountSettingRoute = props => {
   const { match } = props;
   return (
     <FromWrapper>
@@ -78,7 +78,7 @@ export default function AgentAccountSettingsPage(props) {
           <Col md={9} lg={6}>
             <AccountSidebar>
               <AgentAvatar>
-                {/* <Avatar src={AvatarImg} alt="avatar" /> */}
+                <Avatar src={AvatarImg} alt="avatar" />
                 <ContentWrapper>
                   <AgentName>Aziz Acharki Ahmedh</AgentName>
                   <Link to={AGENT_PROFILE_PAGE}>View profile</Link>

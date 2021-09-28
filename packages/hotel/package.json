@@ -32,11 +32,12 @@
     "@styled-system/theme-get": "^5.1.2",
     "react-multi-carousel": "^2.6.5",
     "yup": "^0.27.0",
-    "styled-theme": "^0.3.3"
+    "styled-theme": "^0.3.3",
+    "express": "4.17.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "BUNDLE_VISUALIZE=1 react-app-rewired build",
+    "build": "cross-env BUNDLE_VISUALIZE=1 react-app-rewired build",
     "test": "react-app-rewired test",
     "serve": "serve -s build",
     "eject": "react-scripts eject"
@@ -54,6 +55,7 @@
     "babel-plugin-import": "^1.12.2",
     "webpack-bundle-analyzer": "^3.5.1",
     "customize-cra": "^0.8.0",
-    "react-app-rewired": "^2.1.4"
+    "react-app-rewired": "^2.1.4",
+    "cross-env": "^7.0.3"
   }
 }
