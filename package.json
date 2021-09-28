@@ -1,0 +1,40 @@
+{
+  "name": "hotel",
+  "description": "",
+  "version": "3.0.3",
+  "private": true,
+  "author": "RedQ, Inc",
+  "workspaces": [
+    "shared/**/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "lerna clean --yes && rimraf node_modules",
+    "clean:build": "lerna exec -- rimraf \"{.next,dist,out,build,.docz}\"",
+    "start:all": "lerna run --parallel start",
+    "start": "yarn workspace hotel run start",
+    "build": "yarn workspace hotel run build",
+    "serve": "yarn workspace hotel run serve"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,md,css}": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.0",
+    "husky": "^3.0.7",
+    "lerna": "^3.16.4",
+    "lint-staged": "^9.4.0",
+    "prettier": "^1.18.2",
+    "redux-devtools-extension": "^2.13.8",
+    "rimraf": "^3.0.0",
+    "serve": "^11.2.0"
+  }
+}
