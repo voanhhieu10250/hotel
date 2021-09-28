@@ -10,11 +10,9 @@
   "scripts": {
     "clean": "lerna clean --yes && rimraf node_modules",
     "clean:build": "lerna exec -- rimraf \"{.next,dist,out,build,.docz}\"",
-    "dev:all": "lerna run --parallel start",
-    "dev": "yarn workspace hotel run start",
+    "start:all": "lerna run --parallel start",
+    "start": "yarn workspace hotel run start",
     "build": "yarn workspace hotel run build & webpack --config webpack.server.js",
-    "serve": "yarn workspace hotel run serve",
-    "start": "node server.js",
     "predeploy": "gulp"
   },
   "husky": {
