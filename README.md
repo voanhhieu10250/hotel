@@ -2,7 +2,7 @@
 
 ### To Run the project in dev env:
 
-- yarn && yarn dev
+- yarn & yarn start
 
 ## Hotel Post Grid Data: JSON Format
 
