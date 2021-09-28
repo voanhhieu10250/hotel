@@ -14,7 +14,8 @@
     "dev": "yarn workspace hotel run start",
     "build": "yarn workspace hotel run build",
     "serve": "yarn workspace hotel run serve",
-    "start": "node server.js"
+    "start": "node server.js",
+    "predeploy": "gulp"
   },
   "husky": {
     "hooks": {
@@ -35,6 +36,9 @@
     "prettier": "^1.18.2",
     "redux-devtools-extension": "^2.13.8",
     "rimraf": "^3.0.0",
-    "serve": "^11.2.0"
+    "serve": "^11.2.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-zip": "^5.1.0"
   }
 }

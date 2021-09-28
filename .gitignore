@@ -6,3 +6,8 @@ node_modules
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 .ebextensions/*
+
+gulpfile.js
+production.zip
+
+prod-build
