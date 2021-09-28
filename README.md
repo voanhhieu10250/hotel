@@ -1,20 +1,8 @@
-# Isomorphic Reloaded
+# Hotel
 
-## Docker Guidelines
+### To Run the project in dev env:
 
-### To Run the Isomorphic React Dashboard with Docker:
-
-- yarn && yarn build:iso-cra
-
-- docker build -t isomorphic/dashboard -f ./packages/isomorphic/Dockerfile .
-- docker run -it -p 8080:80 isomorphic/dashboard
-- Open http://localhost:8080/
-
-### To Run the Isomorphic Next Dashboard with Docker:
-
-- docker build -t isomorphic/dashboard-next -f ./packages/isomorphic-next/Dockerfile .
-- docker run -it -p 3000:3000 isomorphic/dashboard-next
-- Open http://localhost:3000/
+- yarn && yarn dev
 
 ## Hotel Post Grid Data: JSON Format
 
