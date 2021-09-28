@@ -9,5 +9,5 @@ node_modules
 
 gulpfile.js
 production.zip
-
+server-build
 prod-build

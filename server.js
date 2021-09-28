@@ -1,12 +1,10 @@
 const path = require('path');
 const express = require('express');
-const existsSync = require('fs').existsSync;
 
 const app = express();
 const port = process.env.PORT || 8080;
-const buildPath = existsSync(path.join(__dirname, '/build'))
-  ? '/build'
-  : '/packages/hotel/build';
+const buildPath =
+  process.env.NODE_ENV === 'production' ? '/build' : '/packages/hotel/build';
 
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, buildPath)));
