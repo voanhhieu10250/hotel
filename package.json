@@ -12,7 +12,7 @@
     "clean:build": "lerna exec -- rimraf \"{.next,dist,out,build,.docz}\"",
     "dev:all": "lerna run --parallel start",
     "dev": "yarn workspace hotel run start",
-    "build": "yarn workspace hotel run build",
+    "build": "yarn workspace hotel run build & webpack --config webpack.server.js",
     "serve": "yarn workspace hotel run serve",
     "start": "node server.js",
     "predeploy": "gulp"
@@ -39,6 +39,8 @@
     "serve": "^11.2.0",
     "gulp": "^4.0.2",
     "gulp-cli": "^2.3.0",
-    "gulp-zip": "^5.1.0"
+    "gulp-zip": "^5.1.0",
+    "webpack-cli": "^4.8.0",
+    "babel-loader": "8.1.0"
   }
 }
