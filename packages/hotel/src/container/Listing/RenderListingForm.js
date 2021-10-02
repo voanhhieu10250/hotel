@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import FormStepper from '@iso/ui/Steppers/FormStepper';
@@ -8,7 +8,7 @@ import Row from '@iso/ui/Antd/Grid/Row';
 import Col from '@iso/ui/Antd/Grid/Col';
 import Heading from '@iso/ui/Heading/Heading';
 import Text from '@iso/ui/Text/Text';
-
+import _ from 'lodash';
 import {
   PorpertyType,
   Parking,
@@ -28,6 +28,7 @@ import StepperWrapper, {
   Title,
   Description,
 } from '@hotel/components/Listing/AddListing.style';
+import { Alert } from 'antd';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const required = value => (value ? undefined : 'Required');
@@ -85,6 +86,9 @@ const QuantityInput = ({ field, form }) => {
 };
 
 const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
+  const [locationError, setLocationError] = useState(false);
+  const [locationFieldBlured, setLocationFieldBlured] = useState(false);
+
   return (
     <StepperWrapper className="hotel-submission-form">
       <FormStepper
@@ -180,12 +184,19 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
 
         <FormStepper.Page
           validate={values => {
+            console.log(values);
             const errors = {};
             if (!values.locationDescription) {
               errors.locationDescription = 'Required';
             }
             if (!values.contactNumber) {
               errors.contactNumber = 'Required';
+            }
+            if (!_.has(values.location, 'formattedAddress')) {
+              errors.location = 'Required';
+              setLocationError(true);
+            } else {
+              setLocationError(false);
             }
             return errors;
           }}
@@ -217,6 +228,17 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
               hasFeedback
               rows={4}
             />
+            {locationError && locationFieldBlured && (
+              <Fragment>
+                <Alert
+                  message="Error"
+                  description="Can not find this location. Please try again."
+                  type="error"
+                  showIcon
+                />
+                <br />
+              </Fragment>
+            )}
 
             <Field
               component={FormMapComponent}
@@ -224,6 +246,7 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
               name="location"
               label="Choose Location"
               hasFeedback
+              handleOnBlur={() => setLocationFieldBlured(true)}
             />
           </LocationWrapper>
         </FormStepper.Page>

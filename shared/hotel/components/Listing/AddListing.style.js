@@ -249,7 +249,9 @@ export const LocationWrapper = styled.div`
     }
   }
   .hotel-form-location {
-    margin-top: 45px;
+    @media only screen and (max-width: 750px) {
+      margin-top: 45px;
+    }
   }
 `;
 
