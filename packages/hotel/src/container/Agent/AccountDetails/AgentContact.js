@@ -31,7 +31,7 @@ const getContactFormValidation = () => {
 const AgentContact = () => {
   const { data, loading } = useDataApi('/data/agent.json');
   if (isEmpty(data) || loading) return <Loader />;
-  const { agent_location, cell_number, email } = data[0];
+  const { language, cell_number, email } = data[0];
 
   const handleSubmit = formProps => {
     console.log(formProps, 'formProps');
@@ -62,8 +62,8 @@ const AgentContact = () => {
             <Text content={cell_number} />
             <Heading as="h3" content="Email" />
             <Text content={email} />
-            <Heading as="h3" content="Address" />
-            <Text content={agent_location.formattedAddress} />
+            <Heading as="h3" content="Language" />
+            <Text content={language} />
           </ContactDetails>
         </Col>
       </Row>

@@ -43,12 +43,14 @@ const MapWithSearchBoxComp = compose(
   });
   const googleMapRef = useRef({});
   const SearchBoxRef = useRef({});
+
   const onPlacesChanged = () => {
     const places = SearchBoxRef.current.getPlaces();
     const bounds = new window.google.maps.LatLngBounds();
     console.log(places, bounds);
+    console.log('photos', places[0].photos);
     places.forEach(place => {
-      if (place.geometry.viewport) {
+      if (place.geometry?.viewport) {
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
@@ -57,7 +59,11 @@ const MapWithSearchBoxComp = compose(
     const nextMarkers = places.map(place => ({
       position: place.geometry.location,
     }));
-    const nextCenter = _.get(nextMarkers, '0.position', locationDetails.center);
+    const nextCenter = _.get(
+      nextMarkers,
+      ['0', 'position'],
+      locationDetails.center
+    );
     console.log(nextCenter, 'nextCenter');
 
     setLocationDetails({
@@ -118,6 +124,7 @@ const MapWithSearchBoxComp = compose(
 
   if (dragNDropData && dragNDropData.length !== 0) {
     getinputvalue(dragNDropData);
+    console.log(dragNDropData);
   } else {
     getinputvalue(locationDetails.places);
   }
@@ -150,9 +157,11 @@ const MapWithSearchBoxComp = compose(
             textOverflow: `ellipses`,
           }}
           defaultValue=""
+          required
           value={locationInput ? locationInput.searchedLocation : ''}
           onChange={handleOnChange}
           onPressEnter={handleOnPressEnter}
+          onBlur={props.handleOnBlur}
         />
       </SearchBox>
       {locationDetails.markers.map((marker, index) => {

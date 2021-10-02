@@ -18,31 +18,7 @@
     "date_of_birth": "2018-06-20T17:30:05.970Z",
     "gender": "female",
     "content": " Hello! I'm glad to share with you all the listings that i've created. Enjoy! And please let me know if you like it with 'Say Thanks' from or include my creadits when you will use it. Peace and Love ^__^ ",
-    "agent_location": {
-      "lat": "52.7675",
-      "lng": "-78.9194",
-      "formattedAddress": "959 Jerde Prairie",
-      "zipcode": "72195-7443",
-      "city": "Simonemouth",
-      "state_long": "Texas",
-      "state_short": "MN",
-      "country_long": "Mongolia",
-      "country_short": "PF"
-    },
-    "gallery": [
-      {
-        "id": 98102,
-        "url": "../placeholder/coverpic.png"
-      },
-      {
-        "id": 70316,
-        "url": "../placeholder/profilepic.png"
-      },
-      {
-        "id": 8489,
-        "url": "../placeholder/hotel.jpg"
-      }
-    ],
+    "language": "Vietnamese",
     "social_profile": {
       "facebook": "http://www.facebook.com/redqinc",
       "twitter": "http://www.twitter.com/redqinc",
