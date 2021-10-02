@@ -17,7 +17,11 @@ const CardHeader = ({ priceStyle, pricePeriodStyle, linkStyle }) => {
         }
         {...priceStyle}
       />
-      <TextLink link="/#1" content="Contact Hotel" {...linkStyle} />
+      <TextLink
+        link="/profile/contact"
+        content="Contact Agent"
+        {...linkStyle}
+      />
     </Fragment>
   );
 };

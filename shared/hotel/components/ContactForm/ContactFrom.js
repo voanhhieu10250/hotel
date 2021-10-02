@@ -62,7 +62,7 @@ const ContactForm = ({ values, submitCount, handleSubmit }) => (
         />
         <HtmlLabel
           htmlFor="cookieConsent"
-          content="Save my email in the broweser fro the next time I contact"
+          content="Save my email in the broweser for the next time I contact"
         />
       </FieldWrapper>
 

@@ -20,10 +20,10 @@ const MainMenu = ({ className }) => {
       <Menu.Item key="1">
         <NavLink to={`${LISTING_POSTS_PAGE}`}>Listing</NavLink>
       </Menu.Item>
-      <Menu.Item key="2">
+      {/* <Menu.Item key="2">
         <NavLink to={`${AGENT_PROFILE_PAGE}`}>Agent</NavLink>
-      </Menu.Item>
-      <Menu.Item key="3">
+      </Menu.Item> */}
+      <Menu.Item key="2">
         <NavLink to={`${PRICING_PLAN_PAGE}`}>Pricing</NavLink>
       </Menu.Item>
     </Menu>
