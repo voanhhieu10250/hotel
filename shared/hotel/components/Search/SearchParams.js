@@ -15,13 +15,11 @@ export const getAmenities = {
   name: 'Amenities',
   identifier: 'amenities',
   options: [
-    { label: 'Free Wi-Fi', value: 'free-wifi' },
-    { label: 'Free Parking', value: 'free-parking' },
-    { label: 'Breakfast included', value: 'breakfast' },
-    { label: 'Pool', value: 'pool' },
-    { label: 'Air Conditioning', value: 'air-condition' },
-    { label: 'Hot Shower', value: 'hot-shower' },
-    { label: 'Cable TV', value: 'cable-tv' },
+    { label: 'Wi-Fi Availability', value: 'wifi_availabitity' },
+    { label: 'Parking Availability', value: 'parking_availabitity' },
+    { label: 'Pool Availability', value: 'pool_availabitity' },
+    { label: 'Air Conditioning', value: 'air_condition' },
+    { label: 'Extra Bed Facility', value: 'extra_bed_facility' },
   ],
 };
 

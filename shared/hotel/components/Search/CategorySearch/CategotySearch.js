@@ -120,7 +120,7 @@ const CategotySearch = ({ history, location }) => {
         }
       />
 
-      <ViewWithPopup
+      {/* <ViewWithPopup
         className={property.length ? 'activated' : ''}
         key={getPropertyType.id}
         noView={true}
@@ -137,7 +137,7 @@ const CategotySearch = ({ history, location }) => {
             onChange={value => onChange(value, 'property')}
           />
         }
-      />
+      /> */}
 
       <ViewWithPopup
         className={
