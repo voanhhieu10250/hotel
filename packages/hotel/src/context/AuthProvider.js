@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
+import Axios from 'axios';
+
 export const AuthContext = React.createContext();
+
+export const apiInstance = Axios.create({
+  baseURL: process.env.REACT_APP_API_ENDPOINT,
+});
 
 const fakeUserData = {
   id: 1,
@@ -62,24 +68,72 @@ const AuthProvider = props => {
   // const [loggedOut, setLoggedOut] = useState(true);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [error, setError] = useState(null);
 
-  const signIn = params => {
+  const signIn = async params => {
+    const { username, password } = params;
     /**
      * Make post request here to authenticate with fetch
      * if returns true then change the state
      */
     console.log(params, 'sign in form Props');
-    setUser(fakeUserData);
-    setToken(fakeToken);
-    addItem('token', fakeToken);
-    setLoggedIn(true);
+    setError(null);
+    try {
+      const { data } = await apiInstance.post('auth/login', {
+        username,
+        password,
+      });
+
+      // setUser(fakeUserData);
+      if (data.status === 200) {
+        setToken(data.content);
+        addItem('token', data.content);
+        setLoggedIn(true);
+
+        // getCurrentUser
+      } else {
+        setError(
+          typeof data.content === 'string' ? data.content : data.content[0]
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
   };
-  const signUp = params => {
+  const signUp = async params => {
+    const { username, password, email } = params;
+
     console.log(params, 'sign up form Props');
-    setUser(fakeUserData);
-    setToken(fakeToken);
-    addItem('token', fakeToken);
-    setLoggedIn(true);
+    setError(null);
+
+    try {
+      const { data } = await apiInstance.post('user/create-user', {
+        email,
+        username,
+        password,
+      });
+      console.log(data);
+
+      // setUser(fakeUserData);
+      // setToken(fakeToken);
+      // addItem("token", fakeToken);
+      // setLoggedIn(true);
+
+      if (data.status === 200) {
+        // setToken(data.content);
+        // addItem("token", data.content);
+        // setLoggedIn(true);
+        // getCurrentUser
+      } else {
+        setError(
+          typeof data.content === 'string' ? data.content : data.content[0]
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
   };
 
   /**
@@ -119,6 +173,7 @@ const AuthProvider = props => {
         tokenAuth,
         user,
         token,
+        error,
       }}
     >
       <>{props.children}</>

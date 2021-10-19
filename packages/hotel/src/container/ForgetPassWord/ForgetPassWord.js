@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '@iso/ui/Logo/Logo';
 import ForgetPassWordForm from './ForgetPassWordForm';
-import ForgerPassWordImage from '@hotel/assets/images/login-page-bg.jpg';
+import ForgerPassWordImage from '@hotel/assets/images/airbnb-banner.jpg';
 import DemoLogo from '@hotel/assets/images/logo-with-text.svg';
 import ForgetPassWordWrapper, {
   Title,

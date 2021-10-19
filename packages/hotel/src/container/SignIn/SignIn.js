@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Row from '@iso/ui/Antd/Grid/Row';
-import Col from '@iso/ui/Antd/Grid/Col';
+// import Row from "@iso/ui/Antd/Grid/Row";
+// import Col from "@iso/ui/Antd/Grid/Col";
 import Divider from '@iso/ui/Antd/Divider/Divider';
-import Button from '@iso/ui/Antd/Button/Button';
+// import Button from "@iso/ui/Antd/Button/Button";
 import Logo from '@iso/ui/Logo/Logo';
 import SignInForm from './SignInForm';
 import { REGISTRATION_PAGE } from '../../settings/constant';
@@ -15,32 +15,32 @@ import SignInWrapper, {
   SignInBannerWrapper,
 } from './SignIn.style';
 
-import signInImage from '@hotel/assets/images/login-page-bg.jpg';
+import signInImage from '@hotel/assets/images/airbnb-banner.jpg';
 import DemoLogo from '@hotel/assets/images/logo-with-text.svg';
 
 const SignIn = () => {
-  const [state, setState] = useState({
-    facebookBtnLoading: false,
-    githubBtnLoading: false,
-    firebaseBtnLoading: false,
-    googleBtnLoading: false,
-  });
+  // const [state, setState] = useState({
+  //   facebookBtnLoading: false,
+  //   githubBtnLoading: false,
+  //   firebaseBtnLoading: false,
+  //   googleBtnLoading: false,
+  // });
 
-  const facebookAuthAction = () => {
-    setState({ facebookBtnLoading: true });
-  };
+  // const facebookAuthAction = () => {
+  //   setState({ facebookBtnLoading: true });
+  // };
 
-  const githubAuthAction = () => {
-    setState({ githubBtnLoading: true });
-  };
+  // const githubAuthAction = () => {
+  //   setState({ githubBtnLoading: true });
+  // };
 
-  const firebaseAuthAction = () => {
-    setState({ firebaseBtnLoading: true });
-  };
+  // const firebaseAuthAction = () => {
+  //   setState({ firebaseBtnLoading: true });
+  // };
 
-  const googleAuthAction = () => {
-    setState({ googleBtnLoading: true });
-  };
+  // const googleAuthAction = () => {
+  //   setState({ googleBtnLoading: true });
+  // };
 
   return (
     <SignInWrapper>
@@ -49,8 +49,9 @@ const SignIn = () => {
         <Title>Welcome Back</Title>
         <TitleInfo>Please Log in to your account</TitleInfo>
         <SignInForm />
-        <Divider>Or Log in With </Divider>
-        <Row gutter={16}>
+        {/* <Divider>Or Log in With </Divider> */}
+        <Divider />
+        {/* <Row gutter={16}>
           <Col span={12}>
             <Button
               loading={state.facebookBtnLoading}
@@ -101,7 +102,7 @@ const SignIn = () => {
               Google+
             </Button>
           </Col>
-        </Row>
+        </Row> */}
         <Text>
           Don't Have an Account?{' '}
           <Link to={REGISTRATION_PAGE}>Registration</Link>

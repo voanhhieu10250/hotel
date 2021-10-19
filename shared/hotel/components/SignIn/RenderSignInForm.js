@@ -1,18 +1,18 @@
-import React from "react";
-import { Field, Form } from "formik";
-import { Link } from "react-router-dom";
-import { MdLockOpen } from "react-icons/md";
-import { AntInput, AntSwitch } from "@iso/ui/Antd/AntdInputWithFormik";
-import Button from "@iso/ui/Antd/Button/Button";
+import React from 'react';
+import { Field, Form } from 'formik';
+import { Link } from 'react-router-dom';
+import { MdLockOpen } from 'react-icons/md';
+import { AntInput, AntSwitch } from '@iso/ui/Antd/AntdInputWithFormik';
+import Button from '@iso/ui/Antd/Button/Button';
 
 import FormWrapper, {
   FieldWrapper,
   SwitchWrapper,
   Label,
-} from "./SiginFormStyle";
+} from './SiginFormStyle';
 
-const RenderBasicInfoForm = (props) => {
-  console.log(props, "formprops");
+const RenderBasicInfoForm = props => {
+  // console.log(props, "formprops");
 
   const { values, submitCount, handleSubmit, forgetPasswordLink } = props;
   return (
@@ -55,7 +55,7 @@ const RenderBasicInfoForm = (props) => {
           type="primary"
           htmlType="submit"
           size="large"
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
         >
           <MdLockOpen />
           Login

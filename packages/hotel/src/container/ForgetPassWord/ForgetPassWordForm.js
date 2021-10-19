@@ -17,7 +17,9 @@ const getForgetPassWordValidationSchema = () => {
 
 const handleSubmit = formProps => {
   const { email } = formProps;
-  alert(`\nSelected Client Email: ${email} `);
+  alert(
+    `\nHi ${email}\n\nWe have received your report. We will get back to you via email as soon as possible.`
+  );
 };
 
 export default () => (

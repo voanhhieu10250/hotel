@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Row from '@iso/ui/Antd/Grid/Row';
-import Col from '@iso/ui/Antd/Grid/Col';
+// import Row from "@iso/ui/Antd/Grid/Row";
+// import Col from "@iso/ui/Antd/Grid/Col";
 import Divider from '@iso/ui/Antd/Divider/Divider';
-import Button from '@iso/ui/Antd/Button/Button';
+// import Button from "@iso/ui/Antd/Button/Button";
 import Logo from '@iso/ui/Logo/Logo';
 import SignUpForm from './SignUpForm';
-import signUpImage from '@hotel/assets/images/login-page-bg.jpg';
+import signUpImage from '@hotel/assets/images/airbnb-banner.jpg';
 import DemoLogo from '@hotel/assets/images/logo-with-text.svg';
 import SignUpWrapper, {
   Title,
@@ -19,28 +19,28 @@ import SignUpWrapper, {
 import { LOGIN_PAGE } from '../../settings/constant';
 
 export default function SignUp() {
-  const [state, setState] = useState({
-    facebookBtnLoading: false,
-    githubBtnLoading: false,
-    firebaseBtnLoading: false,
-    googleBtnLoading: false,
-  });
+  // const [state, setState] = useState({
+  //   facebookBtnLoading: false,
+  //   githubBtnLoading: false,
+  //   firebaseBtnLoading: false,
+  //   googleBtnLoading: false,
+  // });
 
-  const facebookAuthAction = () => {
-    setState({ facebookBtnLoading: true });
-  };
+  // const facebookAuthAction = () => {
+  //   setState({ facebookBtnLoading: true });
+  // };
 
-  const githubAuthAction = () => {
-    setState({ githubBtnLoading: true });
-  };
+  // const githubAuthAction = () => {
+  //   setState({ githubBtnLoading: true });
+  // };
 
-  const firebaseAuthAction = () => {
-    setState({ firebaseBtnLoading: true });
-  };
+  // const firebaseAuthAction = () => {
+  //   setState({ firebaseBtnLoading: true });
+  // };
 
-  const googleAuthAction = () => {
-    setState({ googleBtnLoading: true });
-  };
+  // const googleAuthAction = () => {
+  //   setState({ googleBtnLoading: true });
+  // };
 
   return (
     <SignUpWrapper>
@@ -49,8 +49,9 @@ export default function SignUp() {
         <Title>Welcome To TripFinder</Title>
         <TitleInfo>Please Register for your account</TitleInfo>
         <SignUpForm />
-        <Divider>Or Register Up With </Divider>
-        <Row gutter={16}>
+        {/* <Divider>Or Register Up With </Divider> */}
+        <Divider />
+        {/* <Row gutter={16}>
           <Col span={12}>
             <Button
               loading={state.facebookBtnLoading}
@@ -101,7 +102,7 @@ export default function SignUp() {
               Google+
             </Button>
           </Col>
-        </Row>
+        </Row> */}
         <Text>
           Already Have an Account! <Link to={LOGIN_PAGE}>Login</Link>
         </Text>
