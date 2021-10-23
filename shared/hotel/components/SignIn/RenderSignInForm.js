@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Field, Form } from 'formik';
 import { Link } from 'react-router-dom';
 import { MdLockOpen } from 'react-icons/md';
 import { AntInput, AntSwitch } from '@iso/ui/Antd/AntdInputWithFormik';
 import Button from '@iso/ui/Antd/Button/Button';
+import { Alert } from 'antd';
 
 import FormWrapper, {
   FieldWrapper,
@@ -14,16 +15,28 @@ import FormWrapper, {
 const RenderBasicInfoForm = props => {
   // console.log(props, "formprops");
 
-  const { values, submitCount, handleSubmit, forgetPasswordLink } = props;
+  const {
+    values,
+    submitCount,
+    handleSubmit,
+    forgetPasswordLink,
+    error,
+  } = props;
   return (
     <FormWrapper>
+      {error && (
+        <Fragment>
+          <Alert message={error} type="error" />
+          <br />
+        </Fragment>
+      )}
       <Form onSubmit={handleSubmit}>
         <Field
           component={AntInput}
-          name="email"
-          type="email"
+          name="username"
+          type="text"
           size="large"
-          placeholder="dummy@dummy.io"
+          placeholder="Your username"
           defaultValue={values.email}
           submitCount={submitCount}
           hasFeedback

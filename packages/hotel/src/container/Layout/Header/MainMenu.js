@@ -5,7 +5,7 @@ import Menu from '@iso/ui/Antd/Menu/Menu';
 import {
   HOME_PAGE,
   LISTING_POSTS_PAGE,
-  AGENT_PROFILE_PAGE,
+  // AGENT_PROFILE_PAGE,
   PRICING_PLAN_PAGE,
 } from '../../../settings/constant';
 

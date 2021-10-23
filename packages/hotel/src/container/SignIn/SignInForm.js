@@ -5,17 +5,16 @@ import RenderSignInForm from '@hotel/components/SignIn/RenderSignInForm';
 import * as Yup from 'yup';
 import { AuthContext } from '../../context/AuthProvider';
 import { FORGET_PASSWORD_PAGE } from '../../settings/constant';
+
 const initialValues = {
-  email: '',
+  username: '',
   password: '',
   rememberMe: false,
 };
 
 const getLoginValidationSchema = () => {
   return Yup.object().shape({
-    email: Yup.string()
-      .email('Invalid email')
-      .required('Email is Required!'),
+    username: Yup.string().required('Username is Required!'),
     password: Yup.string()
       .min(6, 'Password has to be longer than 6 characters!')
       .max(20, 'Too Long!')
@@ -24,11 +23,14 @@ const getLoginValidationSchema = () => {
 };
 
 export default () => {
-  const { signIn, loggedIn } = useContext(AuthContext);
+  const { signIn, loggedIn, error } = useContext(AuthContext);
+
   if (loggedIn) return <Redirect to={{ pathname: '/' }} />;
+
   const handleSubmit = formProps => {
     signIn(formProps);
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -36,6 +38,7 @@ export default () => {
       render={props => (
         <RenderSignInForm
           {...props}
+          error={error}
           forgetPasswordLink={FORGET_PASSWORD_PAGE}
         />
       )}
