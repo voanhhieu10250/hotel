@@ -5,7 +5,7 @@ import Axios from 'axios';
 export const AuthContext = React.createContext();
 
 export const apiInstance = Axios.create({
-  baseURL: process.env.REACT_APP_API_ENDPOINT,
+  baseURL: process.env.REACT_APP_API_ENDPOINT + 'api/',
 });
 
 // const fakeUserData = {
@@ -83,6 +83,14 @@ const AuthProvider = props => {
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      setUser(null);
+      setLoggedIn(false);
+      clearItem('token');
+    }
+  }, [error]);
 
   const getUserInfoByToken = async () => {
     try {

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useLocation } from '@iso/lib/hooks/useLocation';
 import Sticky from 'react-stickynode';
 import Row from '@iso/ui/Antd/Grid/Row';
@@ -19,6 +19,7 @@ import SinglePageWrapper, { PostImage } from './SinglePageView.style';
 import PostImageGallery from './ImageGallery/ImageGallery';
 import useDataApi from '@iso/lib/hooks/useDataApi';
 import isEmpty from 'lodash/isEmpty';
+import { apiInstance } from '../../context/AuthProvider';
 
 const SinglePage = ({ match }) => {
   const { href } = useLocation();
@@ -27,10 +28,17 @@ const SinglePage = ({ match }) => {
   const { width } = useWindowSize();
 
   let url = '/data/hotel-single.json';
-  if (!match.params.slug) {
-    url += match.params.slug;
-  }
-  const { data, loading } = useDataApi(url);
+
+  const fetchHotelDetail = async () => {
+    try {
+      const { data } = await apiInstance.get(`/hotel/${match.params.slug}}`);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { data, loading } = useDataApi(`hotel/${match.params.slug}}`);
   if (isEmpty(data) || loading) return <Loader />;
   const {
     reviews,

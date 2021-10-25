@@ -1,10 +1,10 @@
-import React from "react";
-import TextLink from "@iso/ui/TextLink/TextLink";
-import Rating from "@iso/ui/Rating/Rating";
-import Favourite from "@iso/ui/Favorite/Favorite";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import GridCard from "../GridCard/GridCard";
+import React from 'react';
+import TextLink from '@iso/ui/TextLink/TextLink';
+import Rating from '@iso/ui/Rating/Rating';
+import Favourite from '@iso/ui/Favorite/Favorite';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import GridCard from '../GridCard/GridCard';
 
 const responsive = {
   desktop: {
@@ -39,7 +39,7 @@ const PostGrid = ({
   location,
   price,
   ratingCount,
-  gallery,
+  images,
   slug,
   link,
 }) => {
@@ -48,7 +48,7 @@ const PostGrid = ({
       isCarousel={true}
       favorite={
         <Favourite
-          onClick={(event) => {
+          onClick={event => {
             console.log(event);
           }}
         />
@@ -77,17 +77,17 @@ const PostGrid = ({
         sliderClass=""
         slidesToSlide={1}
       >
-        {gallery.map(({ url, title }, index) => (
+        {images.map(({ url }, index) => (
           <img
-            src={url}
-            alt={title}
+            src={process.env.REACT_APP_API_ENDPOINT + 'hotel-images/' + url}
+            alt={url}
             key={index}
             draggable={false}
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              position: "relative",
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              position: 'relative',
             }}
           />
         ))}

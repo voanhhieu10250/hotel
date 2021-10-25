@@ -1,34 +1,28 @@
 import { useState, useReducer, useEffect } from 'react';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { apiInstance } from '../../../../packages/hotel/src/context/AuthProvider';
 
 function sleep(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
-async function SuperFetch(
-  url,
-  method = 'GET',
-  headers = {
-    'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  },
-  body = {}
-) {
+async function SuperFetch(url, method = 'GET', body = {}) {
   NProgress.start();
   // await sleep(1000); // demo purpose only
   let options = {
+    url,
     method,
-    headers,
   };
   if (method === 'POST' || method === 'PUT') options = { ...options, body };
 
   // authentication
   // we will had custom headers here.
 
-  return fetch(url, options)
-    .then(res => {
+  return await apiInstance(options)
+    .then(({ data }) => {
       NProgress.done();
-      return Promise.resolve(res.json());
+      return data;
     })
     .catch(error => Promise.reject(error));
 }
@@ -43,9 +37,7 @@ function dataFetchReducer(state, action) {
       };
     case 'FETCH_SUCCESS':
       return {
-        ...state,
-        data: action.payload.slice(0, state.limit),
-        total: action.payload,
+        data: action.payload,
         loading: false,
         error: false,
       };
@@ -58,13 +50,7 @@ function dataFetchReducer(state, action) {
     case 'LOAD_MORE':
       return {
         ...state,
-        data: [
-          ...state.data,
-          ...state.total.slice(
-            state.data.length,
-            state.data.length + state.limit
-          ),
-        ],
+        data: [...state.data, ...action.payload],
         loading: false,
         error: false,
       };
@@ -73,15 +59,13 @@ function dataFetchReducer(state, action) {
   }
 }
 
-const useDataApi = (initialUrl, limit = 12, initialData = []) => {
+const useDataApi = (initialUrl, initialData = {}) => {
   const [url, setUrl] = useState(initialUrl);
 
   const [state, dispatch] = useReducer(dataFetchReducer, {
     loading: false,
     error: false,
     data: initialData,
-    total: initialData,
-    limit: limit,
   });
 
   useEffect(() => {
@@ -108,10 +92,12 @@ const useDataApi = (initialUrl, limit = 12, initialData = []) => {
       didCancel = true;
     };
   }, [url]);
+
   const loadMoreData = () => {
     // dispatch({ type: 'FETCH_INIT' });
     dispatch({ type: 'LOAD_MORE' });
   };
+
   const doFetch = url => {
     setUrl(url);
   };

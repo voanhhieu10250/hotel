@@ -13,30 +13,31 @@ import {
 } from '../../../settings/constant';
 
 const LuxaryHotelsGrid = () => {
-  const { data, loading } = useDataApi('/data/hotel.json');
+  // const { data, loading } = useDataApi('/data/hotel.json');
+  const { data, loading } = useDataApi('hotel');
   const { width } = useWindowSize();
 
-  let posts = data;
+  let posts = data?.content?.records;
   let limit;
 
   if (data && width <= 767) {
-    posts = data.slice(0, 4);
+    posts = data?.content?.records.slice(0, 4);
     limit = 4;
   }
   if (data && width >= 768) {
-    posts = data.slice(0, 6);
+    posts = data?.content?.records.slice(0, 6);
     limit = 6;
   }
   if (data && width >= 992) {
-    posts = data.slice(0, 8);
+    posts = data?.content?.records.slice(0, 8);
     limit = 8;
   }
   if (data && width >= 1200) {
-    posts = data.slice(0, 10);
+    posts = data?.content?.records.slice(0, 10);
     limit = 10;
   }
   if (data && width >= 1800) {
-    posts = data.slice(0, 12);
+    posts = data?.content?.records.slice(0, 12);
     limit = 12;
   }
 
