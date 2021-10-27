@@ -102,6 +102,17 @@ const routes = [
       modules: ['Pricing'],
     }),
   },
+  {
+    path: AGENT_PROFILE_PAGE + '/:id',
+    component: Loadable({
+      loader: () =>
+        import(
+          /* webpackChunkName: "AgentDetailsViewPage" */ './container/Agent/AccountDetails/AgentDetailsViewPage'
+        ),
+      loading: Loading,
+      modules: ['AgentDetailsViewPage'],
+    }),
+  },
 ];
 
 /**
@@ -126,15 +137,6 @@ const AgentAccountSettingsPage = Loadable({
     ),
   loading: Loading,
   modules: ['AgentAccountSettingsPage'],
-});
-
-const AgentDetailsViewPage = Loadable({
-  loader: () =>
-    import(
-      /* webpackChunkName: "AgentDetailsViewPage" */ './container/Agent/AccountDetails/AgentDetailsViewPage'
-    ),
-  loading: Loading,
-  modules: ['AgentDetailsViewPage'],
 });
 
 /**
@@ -176,10 +178,6 @@ const Routes = () => {
           <Route key={path} path={path} exact={exact} component={component} />
         ))}
         <ProtectedRoute path={ADD_HOTEL_PAGE} component={AddHotel} />
-        <ProtectedRoute
-          path={AGENT_PROFILE_PAGE + '/:id'}
-          component={AgentDetailsViewPage}
-        />
         <ProtectedRoute
           path={AGENT_ACCOUNT_SETTINGS_PAGE}
           component={AgentAccountSettingsPage}

@@ -34,11 +34,10 @@ import AgentDetailsPage, {
   NavigationArea,
 } from './AgentDetails.style';
 import { AuthContext } from '../../../context/AuthProvider';
+import useDataApi from '../../../../../../shared/common/library/hooks/useDataApi';
 
 const ProfileNavigation = props => {
   const { match, className } = props;
-  const { loggedIn } = useContext(AuthContext);
-  if (!loggedIn) return <Redirect to={HOME_PAGE} />;
 
   return (
     <NavigationArea>
@@ -83,8 +82,7 @@ const ProfileRoute = props => {
   );
 };
 
-const AgentProfileInfo = () => {
-  const { user, loading } = useContext(AuthContext);
+const AgentProfileInfo = ({ user, loading }) => {
   // lưu ý, đây chỉ là đang xem acc của chính bản thân. Phải xét trường hợp đang xem acc ng` khác nữa. xài useDataApi
   if (isEmpty(user) || loading) return <Loader />;
   const {
@@ -147,9 +145,16 @@ const AgentProfileInfo = () => {
 };
 
 export default function AgentDetailsViewPage(props) {
+  const { loggedIn, user, loading } = useContext(AuthContext);
+
+  // Check nếu user chưa logged in hoặc param id ko bằng current user id thì xài data lấy từ useDataApi
+  // đồng nghĩa với: khi user đã logged in và đang cự coi profile của bản thân thì ko cần xài useDataApi, còn lại là xài useDataApi
+
+  // useDataApi("")
+
   return (
     <AgentDetailsPage>
-      <AgentProfileInfo />
+      <AgentProfileInfo user={user} loading={loading} />
       <Fragment>
         <ProfileNavigation {...props} />
         <ProfileRoute {...props} />
