@@ -10,7 +10,7 @@ import {
 } from '../../../settings/constant';
 
 const ProfileMenu = ({ avatar, history }) => {
-  const { logOut } = useContext(AuthContext);
+  const { logOut, user } = useContext(AuthContext);
   const [state, setState] = useState(false);
 
   const handleDropdown = () => {
@@ -36,7 +36,9 @@ const ProfileMenu = ({ avatar, history }) => {
 
       <Menu className={`dropdown-menu ${state ? 'active' : 'hide'}`}>
         <Menu.Item onClick={closeDropdown} key="0">
-          <NavLink to={AGENT_PROFILE_PAGE}>View Profile</NavLink>
+          <NavLink to={AGENT_PROFILE_PAGE + '/' + user.id}>
+            View Profile
+          </NavLink>
         </Menu.Item>
         <Menu.Item onClick={closeDropdown} key="1">
           <NavLink to={ADD_HOTEL_PAGE}>Add Hotel</NavLink>

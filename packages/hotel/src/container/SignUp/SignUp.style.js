@@ -1,9 +1,14 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 const SignUpWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  ${props =>
+    props.$loading &&
+    css`
+      cursor: progress;
+    `};
 `;
 
 export const SignUpFormWrapper = styled.div`

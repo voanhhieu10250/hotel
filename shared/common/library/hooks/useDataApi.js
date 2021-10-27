@@ -19,12 +19,14 @@ async function SuperFetch(url, method = 'GET', body = {}) {
   // authentication
   // we will had custom headers here.
 
-  return await apiInstance(options)
-    .then(({ data }) => {
-      NProgress.done();
-      return data;
-    })
-    .catch(error => Promise.reject(error));
+  try {
+    const { data } = await apiInstance(options);
+    NProgress.done();
+    return data;
+  } catch (error) {
+    NProgress.done();
+    return Promise.reject(error);
+  }
 }
 
 function dataFetchReducer(state, action) {

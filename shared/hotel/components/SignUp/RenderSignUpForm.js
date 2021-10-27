@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Field, Form } from 'formik';
 import { MdLockOpen } from 'react-icons/md';
 import { AntInput, AntSwitch } from '@iso/ui/Antd/AntdInputWithFormik';
 import Button from '@iso/ui/Antd/Button/Button';
+import { Alert } from 'antd';
 
 import FormWrapper, {
   FieldWrapper,
@@ -11,9 +12,15 @@ import FormWrapper, {
 } from './SignUpFormStyle';
 
 const RenderSignUpForm = props => {
-  const { values, submitCount, handleSubmit } = props;
+  const { values, submitCount, handleSubmit, error } = props;
   return (
     <FormWrapper>
+      {error && (
+        <Fragment>
+          <Alert message={error} type="error" />
+          <br />
+        </Fragment>
+      )}
       <Form onSubmit={handleSubmit}>
         <Field
           component={AntInput}

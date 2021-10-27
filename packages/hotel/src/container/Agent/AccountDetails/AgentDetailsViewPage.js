@@ -1,5 +1,5 @@
 import React, { useContext, Fragment } from 'react';
-import { Route, NavLink, Link } from 'react-router-dom';
+import { Route, NavLink, Redirect, Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 import {
   IoLogoTwitter,
@@ -15,15 +15,14 @@ import Heading from '@iso/ui/Heading/Heading';
 import Text from '@iso/ui/Text/Text';
 import { ProfilePicLoader } from '@iso/ui/ContentLoader/ContentLoader';
 import Loader from '@hotel/components/Loader/Loader';
-import AuthProvider, { AuthContext } from '../../../context/AuthProvider';
 import AgentItemLists from './AgentItemLists';
 import AgentFavItemLists from './AgentFavItemLists';
 import AgentContact from './AgentContact';
-import useDataApi from '@iso/lib/hooks/useDataApi';
 import {
   ADD_HOTEL_PAGE,
   AGENT_PROFILE_FAVOURITE,
   AGENT_PROFILE_CONTACT,
+  HOME_PAGE,
 } from '../../../settings/constant';
 import AgentDetailsPage, {
   BannerSection,
@@ -34,10 +33,13 @@ import AgentDetailsPage, {
   SocialAccount,
   NavigationArea,
 } from './AgentDetails.style';
+import { AuthContext } from '../../../context/AuthProvider';
 
 const ProfileNavigation = props => {
   const { match, className } = props;
   const { loggedIn } = useContext(AuthContext);
+  if (!loggedIn) return <Redirect to={HOME_PAGE} />;
+
   return (
     <NavigationArea>
       <Menu className={className}>
@@ -56,17 +58,16 @@ const ProfileNavigation = props => {
         </Menu.Item>
       </Menu>
 
-      {loggedIn && (
-        <Link className="add_card" to={ADD_HOTEL_PAGE}>
-          <IoIosAdd /> Add Hotel
-        </Link>
-      )}
+      <Link className="add_card" to={ADD_HOTEL_PAGE}>
+        <IoIosAdd /> Add Hotel
+      </Link>
     </NavigationArea>
   );
 };
 
 const ProfileRoute = props => {
   const { match } = props;
+  console.log(match);
   return (
     <Container fluid={true}>
       <Route exact path={`${match.path}`} component={AgentItemLists} />
@@ -83,31 +84,35 @@ const ProfileRoute = props => {
 };
 
 const AgentProfileInfo = () => {
-  const { data, loading } = useDataApi('/data/agent.json');
-  if (isEmpty(data) || loading) return <Loader />;
+  const { user, loading } = useContext(AuthContext);
+  // lưu ý, đây chỉ là đang xem acc của chính bản thân. Phải xét trường hợp đang xem acc ng` khác nữa. xài useDataApi
+  if (isEmpty(user) || loading) return <Loader />;
   const {
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     content,
-    profile_pic,
-    cover_pic,
-    social_profile,
-  } = data[0];
+    profilePic,
+    coverPic,
+    twitter,
+    facebook,
+    instagram,
+  } = user;
 
-  const username = `${first_name} ${last_name}`;
+  const username = `${firstName} ${lastName}`;
 
   return (
     <Fragment>
       <BannerSection
         style={{
-          background: `url(${cover_pic.url}) center center / cover no-repeat`,
+          background: `url(${coverPic?.url ||
+            '/placeholder/coverpic.png'}) center center / cover no-repeat`,
         }}
       />
       <UserInfoArea>
         <Container fluid={true}>
           <ProfileImage>
-            {profile_pic ? (
-              <Image src={profile_pic.url} alt="Profile Pic" />
+            {profilePic ? (
+              <Image src={profilePic.url} alt="Profile Pic" />
             ) : (
               <ProfilePicLoader />
             )}
@@ -119,29 +124,17 @@ const AgentProfileInfo = () => {
             </ProfileInformation>
             <SocialAccount>
               <Popover content="Twitter">
-                <a
-                  href={social_profile.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={twitter} target="_blank" rel="noopener noreferrer">
                   <IoLogoTwitter className="twitter" />
                 </a>
               </Popover>
               <Popover content="Facebook">
-                <a
-                  href={social_profile.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={facebook} target="_blank" rel="noopener noreferrer">
                   <IoLogoFacebook className="facebook" />
                 </a>
               </Popover>
               <Popover content="Instagram">
-                <a
-                  href={social_profile.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={instagram} target="_blank" rel="noopener noreferrer">
                   <IoLogoInstagram className="instagram" />
                 </a>
               </Popover>
@@ -156,13 +149,11 @@ const AgentProfileInfo = () => {
 export default function AgentDetailsViewPage(props) {
   return (
     <AgentDetailsPage>
-      <AuthProvider>
-        <AgentProfileInfo />
-        <Fragment>
-          <ProfileNavigation {...props} />
-          <ProfileRoute {...props} />
-        </Fragment>
-      </AuthProvider>
+      <AgentProfileInfo />
+      <Fragment>
+        <ProfileNavigation {...props} />
+        <ProfileRoute {...props} />
+      </Fragment>
     </AgentDetailsPage>
   );
 }

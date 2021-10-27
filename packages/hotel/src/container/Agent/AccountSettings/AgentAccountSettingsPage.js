@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, NavLink, Link } from 'react-router-dom';
 import Row from '@iso/ui/Antd/Grid/Row';
 import Col from '@iso/ui/Antd/Grid/Col';
@@ -23,6 +23,7 @@ import AccountSettingWrapper, {
 } from './AccountSettings.style';
 
 import AvatarImg from '@hotel/assets/images/profileImage.jpg';
+import { AuthContext } from '../../../context/AuthProvider';
 
 const AccountSettingNavLink = props => {
   const { match } = props;
@@ -71,6 +72,8 @@ const AccountSettingRoute = props => {
 };
 
 export default function AgentAccountSettingsPage(props) {
+  const { user } = useContext(AuthContext);
+
   return (
     <AccountSettingWrapper>
       <Container fullWidth={true}>
@@ -81,7 +84,9 @@ export default function AgentAccountSettingsPage(props) {
                 <Avatar src={AvatarImg} alt="avatar" />
                 <ContentWrapper>
                   <AgentName>Aziz Acharki Ahmedh</AgentName>
-                  <Link to={AGENT_PROFILE_PAGE}>View profile</Link>
+                  <Link to={AGENT_PROFILE_PAGE + '/' + user.id}>
+                    View profile
+                  </Link>
                 </ContentWrapper>
               </AgentAvatar>
               <AccountSettingNavLink {...props} />

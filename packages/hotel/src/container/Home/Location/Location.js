@@ -8,10 +8,10 @@ import TextLink from '@iso/ui/TextLink/TextLink';
 import SectionTitle from '@hotel/components/SectionTitle/SectionTitle';
 import ImageCard from '@hotel/components/ImageCard/ImageCard';
 import GlideCarousel, { GlideSlide } from '@iso/ui/GlideCarousel/GlideCarousel';
-import useDataApi from '@iso/lib/hooks/useDataApi';
+// import useDataApi from '@iso/lib/hooks/useDataApi';
 import { LISTING_POSTS_PAGE } from '../../../settings/constant';
 import LocationWrapper, { CarouselSection } from './Location.style';
-import { apiInstance } from '../../../context/AuthProvider';
+// import { apiInstance } from '../../../context/AuthProvider';
 const carouselOptions = {
   type: 'carousel',
   perView: 6,

@@ -41,7 +41,7 @@ const getRegisterValidationSchema = () => {
 };
 
 export default () => {
-  const { signUp, loggedIn } = useContext(AuthContext);
+  const { signUp, loggedIn, error } = useContext(AuthContext);
   if (loggedIn) return <Redirect to={{ pathname: '/' }} />;
   const handleSubmit = formProps => {
     signUp(formProps);
@@ -51,7 +51,7 @@ export default () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={getRegisterValidationSchema}
-      render={RenderSignUpForm}
+      render={props => <RenderSignUpForm {...props} error={error} />}
     />
   );
 };

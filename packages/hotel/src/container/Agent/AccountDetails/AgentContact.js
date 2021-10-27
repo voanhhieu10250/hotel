@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Row from '@iso/ui/Antd/Grid/Row';
@@ -7,16 +7,9 @@ import Heading from '@iso/ui/Heading/Heading';
 import Text from '@iso/ui/Text/Text';
 import Loader from '@hotel/components/Loader/Loader';
 import ContactForm from '@hotel/components/ContactForm/ContactFrom';
-import useDataApi from '@iso/lib/hooks/useDataApi';
 import { AgentContactWrapper, ContactDetails } from './AgentDetails.style';
 import isEmpty from 'lodash/isEmpty';
-
-const initialValues = {
-  email: '',
-  message: '',
-  contact: '',
-  cookieConsent: false,
-};
+import { AuthContext } from '../../../context/AuthProvider';
 
 const getContactFormValidation = () => {
   return Yup.object().shape({
@@ -28,20 +21,28 @@ const getContactFormValidation = () => {
   });
 };
 
-const AgentContact = () => {
-  const { data, loading } = useDataApi('/data/agent.json');
-  if (isEmpty(data) || loading) return <Loader />;
-  const { language, cell_number, email } = data[0];
+const AgentContact = ({
+  agentId = '',
+  agentEmail = '',
+  agentCellNumber = '',
+  match,
+}) => {
+  const { user, loading } = useContext(AuthContext);
+  console.log(match);
+  if (isEmpty(user) || loading) return <Loader />;
 
-  const handleSubmit = formProps => {
+  const handleSubmit = async formProps => {
     console.log(formProps, 'formProps');
-    const email = formProps ? formProps.email : '';
-    const message = formProps ? formProps.message : '';
-    const contact = formProps ? formProps.contact : '';
-    const cookieConsent = formProps ? formProps.cookieConsent : false;
-    alert(
-      `Email : ${email} \n Contact : ${contact} \n Messege : ${message} \n Cookie Consent : ${cookieConsent}`
-    );
+    // const email = formProps ? formProps.email : "";
+    // const message = formProps ? formProps.message : "";
+    // const contact = formProps ? formProps.contact : "";
+
+    // const result = await apiInstance.post("message/create-new-message", {
+    //   agentId: agentId,
+    //   message: message,
+    //   senderContact: contact,
+    //   senderEmail: email,
+    // });
   };
 
   return (
@@ -50,7 +51,11 @@ const AgentContact = () => {
       <Row gutter={30}>
         <Col lg={16}>
           <Formik
-            initialValues={initialValues}
+            initialValues={{
+              email: user.email,
+              message: '',
+              contact: user.cellNumber,
+            }}
             onSubmit={handleSubmit}
             render={ContactForm}
             validationSchema={getContactFormValidation}
@@ -59,11 +64,17 @@ const AgentContact = () => {
         <Col lg={8}>
           <ContactDetails>
             <Heading as="h3" content="Phone No" />
-            <Text content={cell_number} />
+            <Text
+              content={
+                agentCellNumber === 'secretadmin'
+                  ? '0987654321'
+                  : 'User cell number'
+              }
+            />
             <Heading as="h3" content="Email" />
-            <Text content={email} />
+            <Text content={agentEmail} />
             <Heading as="h3" content="Language" />
-            <Text content={language} />
+            <Text content={'English'} />
           </ContactDetails>
         </Col>
       </Row>
