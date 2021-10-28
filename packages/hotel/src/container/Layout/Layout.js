@@ -18,6 +18,7 @@ import {
   AGENT_IMAGE_EDIT_PAGE,
   AGENT_PASSWORD_CHANGE_PAGE,
   AGENT_PROFILE_FAVOURITE,
+  AGENT_PROFILE_CONTACT,
 } from '../../settings/constant';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
@@ -45,7 +46,8 @@ export default withRouter(function Layout({ children, location }) {
             location.pathname === PRICING_PLAN_PAGE ||
             location.pathname === ADD_HOTEL_PAGE ||
             (location.pathname.startsWith(AGENT_PROFILE_PAGE) &&
-              !location.pathname.endsWith(AGENT_PROFILE_FAVOURITE)) ||
+              !location.pathname.endsWith(AGENT_PROFILE_FAVOURITE) &&
+              !location.pathname.endsWith(AGENT_PROFILE_CONTACT)) ||
             location.pathname === CHANGE_PASSWORD_PAGE ||
             location.pathname === FORGET_PASSWORD_PAGE ||
             location.pathname === PRIVACY_PAGE ||

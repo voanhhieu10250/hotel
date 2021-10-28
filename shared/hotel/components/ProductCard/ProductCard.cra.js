@@ -79,7 +79,7 @@ const PostGrid = ({
       >
         {images.map(({ url }, index) => (
           <img
-            src={process.env.REACT_APP_API_ENDPOINT + 'hotel-images/' + url}
+            src={url}
             alt={url}
             key={index}
             draggable={false}

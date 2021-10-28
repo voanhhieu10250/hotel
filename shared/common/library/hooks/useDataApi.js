@@ -33,7 +33,7 @@ function dataFetchReducer(state, action) {
   switch (action.type) {
     case 'FETCH_INIT':
       return {
-        ...state,
+        data: state.data,
         loading: true,
         error: false,
       };
@@ -45,7 +45,7 @@ function dataFetchReducer(state, action) {
       };
     case 'FETCH_FAILURE':
       return {
-        ...state,
+        data: action.payload,
         loading: false,
         error: true,
       };
@@ -61,7 +61,7 @@ function dataFetchReducer(state, action) {
   }
 }
 
-const useDataApi = (initialUrl, initialData = {}) => {
+const useDataApi = (initialUrl, initialData = null) => {
   const [url, setUrl] = useState(initialUrl);
 
   const [state, dispatch] = useReducer(dataFetchReducer, {
@@ -83,7 +83,7 @@ const useDataApi = (initialUrl, initialData = {}) => {
         }
       } catch (error) {
         if (!didCancel) {
-          dispatch({ type: 'FETCH_FAILURE' });
+          dispatch({ type: 'FETCH_FAILURE', payload: initialData });
         }
       }
     };
