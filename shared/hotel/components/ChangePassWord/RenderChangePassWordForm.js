@@ -10,19 +10,7 @@ const RenderChangePassWordForm = props => {
   return (
     <Form onSubmit={handleSubmit}>
       <Row gutter={30}>
-        <Col lg={12}>
-          <Field
-            component={AntInput}
-            name="password"
-            type="password"
-            size="large"
-            label="Enter old password"
-            submitCount={submitCount}
-            value={values.password}
-            hasFeedback
-          />
-        </Col>
-        <Col lg={12}>
+        <Col lg={24}>
           <Field
             component={AntInput}
             name="newPassWord"
@@ -49,7 +37,7 @@ const RenderChangePassWordForm = props => {
       </Row>
       <div className="submit-container">
         <Button className="signin-btn" type="primary" htmlType="submit">
-          Sent Email
+          Submit
         </Button>
       </div>
     </Form>

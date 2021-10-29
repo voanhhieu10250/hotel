@@ -37,21 +37,22 @@ const SinglePage = ({ match }) => {
   //     console.log(error);
   //   }
   // };
-
-  const { data, loading } = useDataApi(`hotel/${match.params.slug}}`);
+  console.log(match.params.slug);
+  const { data, loading } = useDataApi(`hotel/${match.params.slug}`);
   if (isEmpty(data) || loading) return <Loader />;
+  console.log(data);
   const {
     reviews,
     rating,
     ratingCount,
     price,
     title,
-    gallery,
+    images,
     location,
     content,
     amenities,
-    author,
-  } = data[0];
+    agent,
+  } = data.content;
 
   return (
     <SinglePageWrapper>
@@ -93,7 +94,7 @@ const SinglePage = ({ match }) => {
         </Modal>
       </PostImage>
 
-      <TopBar title={title} shareURL={href} author={author} media={gallery} />
+      <TopBar title={title} shareURL={href} author={agent} media={images} />
 
       <Container>
         <Row gutter={30} id="reviewSection" style={{ marginTop: 30 }}>
@@ -106,7 +107,16 @@ const SinglePage = ({ match }) => {
               ratingCount={ratingCount}
             />
             <Amenities amenities={amenities} />
-            <Location location={data[0]} />
+            <Location
+              location={{
+                ...location,
+                title,
+                images,
+                price,
+                rating,
+                ratingCount,
+              }}
+            />
           </Col>
           <Col xl={8}>
             {width > 1200 ? (

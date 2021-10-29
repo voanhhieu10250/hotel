@@ -26,12 +26,13 @@ import AvatarImg from '@hotel/assets/images/profileImage.jpg';
 import { AuthContext } from '../../../context/AuthProvider';
 
 const AccountSettingNavLink = props => {
-  const { match } = props;
+  const { match, user } = props;
+
   return (
     <SidebarMenuWrapper>
       <Menu
         defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        // defaultOpenKeys={["sub1"]}
         mode="inline"
       >
         <Menu.Item key="1">
@@ -55,17 +56,21 @@ const AccountSettingNavLink = props => {
 };
 
 const AccountSettingRoute = props => {
-  const { match } = props;
+  const { match, user } = props;
   return (
     <FromWrapper>
-      <Route exact path={`${match.path}`} component={AgentCreateOrUpdateForm} />
+      <Route
+        exact
+        path={`${match.path}`}
+        render={props => <AgentCreateOrUpdateForm {...props} user={user} />}
+      />
       <Route
         path={`${match.path}${AGENT_IMAGE_EDIT_PAGE}`}
-        component={AgentPictureChangeForm}
+        render={props => <AgentPictureChangeForm {...props} user={user} />}
       />
       <Route
         path={`${match.path}${AGENT_PASSWORD_CHANGE_PAGE}`}
-        component={ChangePassWord}
+        render={props => <ChangePassWord {...props} user={user} />}
       />
     </FromWrapper>
   );
@@ -81,19 +86,21 @@ export default function AgentAccountSettingsPage(props) {
           <Col md={9} lg={6}>
             <AccountSidebar>
               <AgentAvatar>
-                <Avatar src={AvatarImg} alt="avatar" />
+                <Avatar src={user.profilePic?.url || AvatarImg} alt="avatar" />
                 <ContentWrapper>
-                  <AgentName>Aziz Acharki Ahmedh</AgentName>
+                  <AgentName>
+                    {user.firstName} {user.lastName}
+                  </AgentName>
                   <Link to={AGENT_PROFILE_PAGE + '/' + user.id}>
                     View profile
                   </Link>
                 </ContentWrapper>
               </AgentAvatar>
-              <AccountSettingNavLink {...props} />
+              <AccountSettingNavLink {...props} user={user} />
             </AccountSidebar>
           </Col>
           <Col md={15} lg={18}>
-            <AccountSettingRoute {...props} />
+            <AccountSettingRoute {...props} user={user} />
           </Col>
         </Row>
       </Container>

@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import RenderChangePassWordForm from '@hotel/components/ChangePassWord/RenderChangePassWordForm';
 import * as Yup from 'yup';
 import { FormTitle } from './AccountSettings.style';
+import { Alert } from 'antd';
+import { apiInstance } from '../../../context/AuthProvider';
 
 const initialValues = {
-  password: '',
   newPassWord: '',
   confrimNewPassWord: '',
 };
@@ -26,17 +27,45 @@ const getChangePassWordValidationSchema = () => {
   });
 };
 
-const handleSubmit = formProps => {
-  const { password, newPassWord, confrimNewPassWord } = formProps;
-  alert(
-    `\nSelected Client password: ${password} \nSelected Client New Password: ${newPassWord} \nSelected Client Confirmed Password: ${confrimNewPassWord} `
-  );
-};
+export default function ChangePassWord({ user }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
-export default function ChangePassWord() {
+  const handleSubmit = async formProps => {
+    const { newPassWord } = formProps;
+
+    if (loading) return;
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const { data } = await apiInstance({
+        url: 'user/update-user',
+        data: {
+          password: newPassWord,
+          id: user.id,
+        },
+        method: 'PUT',
+      });
+
+      console.log(data);
+
+      if (data.status === 200) setSuccess('Your password has updated !');
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <Fragment>
       <FormTitle>Change Password</FormTitle>
+      {error && <Alert message={error} type="error" />}
+      {success && <Alert message={success} type="success" />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}

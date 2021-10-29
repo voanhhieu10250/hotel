@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Row from '@iso/ui/Antd/Grid/Row';
@@ -8,8 +8,8 @@ import Text from '@iso/ui/Text/Text';
 import Loader from '@hotel/components/Loader/Loader';
 import ContactForm from '@hotel/components/ContactForm/ContactFrom';
 import { AgentContactWrapper, ContactDetails } from './AgentDetails.style';
-import isEmpty from 'lodash/isEmpty';
-import { AuthContext } from '../../../context/AuthProvider';
+import { apiInstance, AuthContext } from '../../../context/AuthProvider';
+import { Alert } from 'antd';
 
 const getContactFormValidation = () => {
   return Yup.object().shape({
@@ -21,60 +21,89 @@ const getContactFormValidation = () => {
   });
 };
 
-const AgentContact = ({
-  agentId = '',
-  agentEmail = '',
-  agentCellNumber = '',
-  match,
-}) => {
-  const { user, loading } = useContext(AuthContext);
-  console.log(match);
-  if (isEmpty(user) || loading) return <Loader />;
+const AgentContact = ({ data, loading }) => {
+  const { user } = useContext(AuthContext);
+  const [messageLoading, setMessageLoading] = useState(false);
+  const [messageError, setMessageError] = useState(null);
+  const [messageSuccess, setMessageSuccess] = useState(null);
+
+  const ownContact = user && user.id === data.id;
+  if (loading) return <Loader />;
 
   const handleSubmit = async formProps => {
     console.log(formProps, 'formProps');
-    // const email = formProps ? formProps.email : "";
-    // const message = formProps ? formProps.message : "";
-    // const contact = formProps ? formProps.contact : "";
+    const email = formProps ? formProps.email : '';
+    const message = formProps ? formProps.message : '';
+    const contact = formProps ? formProps.contact : '';
 
-    // const result = await apiInstance.post("message/create-new-message", {
-    //   agentId: agentId,
-    //   message: message,
-    //   senderContact: contact,
-    //   senderEmail: email,
-    // });
+    setMessageLoading(true);
+    setMessageError(null);
+    setMessageSuccess(null);
+
+    try {
+      const result = await apiInstance.post('message/create-new-message', {
+        agentId: data.id,
+        message: message,
+        senderContact: contact,
+        senderEmail: email,
+      });
+      console.log(result.data);
+      if (result.data.status === 201) {
+        setMessageSuccess('Your message has been sent.');
+      } else {
+        setMessageError('Something went wrong. Please try again later.');
+      }
+    } catch (error) {
+      console.log(error);
+      setMessageError('Something went wrong. Please try again later.');
+    }
+
+    setMessageLoading(false);
   };
 
   return (
     <AgentContactWrapper>
-      <Heading content="Send Messege" />
+      <Heading content={ownContact ? 'Your Contact Info' : 'Send Messege'} />
       <Row gutter={30}>
-        <Col lg={16}>
-          <Formik
-            initialValues={{
-              email: user.email,
-              message: '',
-              contact: user.cellNumber,
-            }}
-            onSubmit={handleSubmit}
-            render={ContactForm}
-            validationSchema={getContactFormValidation}
-          />
-        </Col>
+        {!ownContact && (
+          <Col lg={16}>
+            {messageError && <Alert message={messageError} type="error" />}
+            {messageSuccess && (
+              <Alert message={messageSuccess} type="success" />
+            )}
+            {messageLoading && <Alert message="Loading ..." type="success" />}
+            <Formik
+              initialValues={{
+                email: user?.email || '',
+                message: '',
+                contact: user?.cellNumber || '',
+              }}
+              onSubmit={handleSubmit}
+              render={ContactForm}
+              validationSchema={getContactFormValidation}
+            />
+          </Col>
+        )}
         <Col lg={8}>
           <ContactDetails>
             <Heading as="h3" content="Phone No" />
             <Text
               content={
-                agentCellNumber === 'secretadmin'
+                data.cellNumber === 'secretadmin'
                   ? '0987654321'
                   : 'User cell number'
               }
             />
             <Heading as="h3" content="Email" />
-            <Text content={agentEmail} />
+            <Text content={data.email} />
             <Heading as="h3" content="Language" />
-            <Text content={'English'} />
+            <Text
+              content={
+                data.language && data.language !== 'string'
+                  ? data.language
+                  : 'English'
+              }
+            />
           </ContactDetails>
         </Col>
       </Row>

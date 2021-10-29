@@ -121,11 +121,10 @@ const AgentProfileInfo = ({ user, loading }) => {
       <UserInfoArea>
         <Container fluid={true}>
           <ProfileImage>
-            {profilePic ? (
-              <Image src={profilePic.url} alt="Profile Pic" />
-            ) : (
-              <ProfilePicLoader />
-            )}
+            <Image
+              src={profilePic?.url || '/placeholder/profilepic.png'}
+              alt="Profile Pic"
+            />
           </ProfileImage>
           <ProfileInformationArea>
             <ProfileInformation>
