@@ -208,7 +208,7 @@ export const ButtonGroup = styled.div`
 `;
 
 export const PostImage = styled.div`
-  background-image: url(${props.bgImage});
+  background-image: url(${props => props.bgImage});
   background-position: center center;
   background-size: cover;
   height: 600px;
