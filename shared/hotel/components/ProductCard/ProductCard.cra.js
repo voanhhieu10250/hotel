@@ -66,7 +66,7 @@ const PostGrid = ({
     // console.log(event);
     setLoading(true);
     try {
-      if (!event) {
+      if (event) {
         // if event === false => not add yet
 
         const { data } = await apiInstance.post('user/add-favourite-hotel', {

@@ -19,6 +19,7 @@ import SinglePageWrapper, { PostImage } from './SinglePageView.style';
 import PostImageGallery from './ImageGallery/ImageGallery';
 import useDataApi from '@iso/lib/hooks/useDataApi';
 import isEmpty from 'lodash/isEmpty';
+import { Redirect } from 'react-router';
 // import { apiInstance } from "../../context/AuthProvider";
 
 const SinglePage = ({ match }) => {
@@ -38,8 +39,10 @@ const SinglePage = ({ match }) => {
   //   }
   // };
   console.log(match.params.slug);
-  const { data, loading } = useDataApi(`hotel/${match.params.slug}`);
-  if (isEmpty(data) || loading) return <Loader />;
+  const { data, loading, error } = useDataApi(`hotel/${match.params.slug}`);
+  if ((!data && loading) || (!data && !error && !loading)) return <Loader />;
+  if ((!data || !data.content) && !loading) return <Redirect to="/404" />;
+
   console.log(data);
   const {
     reviews,
@@ -52,6 +55,7 @@ const SinglePage = ({ match }) => {
     content,
     amenities,
     agent,
+    id,
   } = data.content;
 
   return (
@@ -76,7 +80,7 @@ const SinglePage = ({ match }) => {
           closable={false}
         >
           <Fragment>
-            <PostImageGallery />
+            <PostImageGallery images={images} />
             <Button
               onClick={() => setIsModalShowing(false)}
               className="image_gallery_close"
@@ -94,7 +98,13 @@ const SinglePage = ({ match }) => {
         </Modal>
       </PostImage>
 
-      <TopBar title={title} shareURL={href} author={agent} media={images} />
+      <TopBar
+        title={title}
+        shareURL={href}
+        author={agent}
+        media={images}
+        hotelId={id}
+      />
 
       <Container>
         <Row gutter={30} id="reviewSection" style={{ marginTop: 30 }}>
@@ -126,7 +136,7 @@ const SinglePage = ({ match }) => {
                 top={202}
                 bottomBoundary="#reviewSection"
               >
-                <Reservation />
+                <Reservation price={price} agentId={agent.id} hotelId={id} />
               </Sticky>
             ) : (
               <BottomReservation
@@ -134,6 +144,8 @@ const SinglePage = ({ match }) => {
                 price={price}
                 rating={rating}
                 ratingCount={ratingCount}
+                agentId={agent.id}
+                hotelId={id}
               />
             )}
           </Col>
@@ -144,6 +156,7 @@ const SinglePage = ({ match }) => {
               reviews={reviews}
               ratingCount={ratingCount}
               rating={rating}
+              hotelId={id}
             />
           </Col>
           <Col xl={8} />

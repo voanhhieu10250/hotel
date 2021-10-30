@@ -26,7 +26,6 @@ const ProfileMenu = ({ avatar, history }) => {
 
   function handleLogout() {
     logOut();
-    history.push('/');
   }
   return (
     <div className="avatar-dropdown" ref={dropdownRef}>

@@ -1,7 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const ReviewFormWrapper = styled.div`
+  ${({ $loading }) =>
+    $loading &&
+    css`
+      cursor: progress;
+    `}
   .field-container {
     margin-bottom: 58px;
     @media only screen and (max-width: 1200px) {

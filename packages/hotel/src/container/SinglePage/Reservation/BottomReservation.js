@@ -7,7 +7,14 @@ import StickyBooking from '@hotel/components/StickyBooking/StickyBooking';
 import LogoImage from '@hotel/assets/images/logo-alt.svg';
 import Reservation from './Reservation';
 
-const BottomReservation = ({ title, price, rating, ratingCount }) => {
+const BottomReservation = ({
+  title,
+  price,
+  rating,
+  ratingCount,
+  agentId,
+  hotelId,
+}) => {
   // modal and reservation control state
   const [state, setState] = useState(false);
 
@@ -47,7 +54,7 @@ const BottomReservation = ({ title, price, rating, ratingCount }) => {
         wrapClassName="reservation_modal"
         closable={false}
       >
-        <Reservation />
+        <Reservation price={price} agentId={agentId} hotelId={hotelId} />
         <Button onClick={handleCancel} className="close">
           <IoIosClose />
         </Button>

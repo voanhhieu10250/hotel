@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import Sticky from 'react-stickynode';
 import {
   FaceBookShare,
@@ -12,6 +12,10 @@ import Dropdown from '@iso/ui/Antd/Dropdown/Dropdown';
 import Favorite from '@iso/ui/Favorite/Favorite';
 import ScrollBar from '@iso/ui/UI/ScrollBar/ScrollBar';
 import { TobBarWrapper, ButtonGroup } from '../SinglePageView.style';
+import { apiInstance, AuthContext } from '../../../context/AuthProvider';
+import { useHistory } from 'react-router';
+import { LOGIN_PAGE } from '../../../settings/constant';
+import { find } from 'lodash';
 
 const topBarMenu = [
   {
@@ -52,9 +56,54 @@ const SocialShareMenu = props => {
 };
 
 const SideButtons = props => {
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const { user, loggedIn } = useContext(AuthContext);
+  const alreadyInFavourite =
+    user && find(user.favouritePost, { id: props.hotelId }) ? true : false;
+  const isLoggedIn = loggedIn && user;
+
+  const handleAddHotelToFavourite = async event => {
+    if (!user) history.push(LOGIN_PAGE);
+    if (loading) return;
+    // console.log(event);
+    setLoading(true);
+    try {
+      if (event) {
+        // if event === false => not add yet
+
+        const { data } = await apiInstance.post('user/add-favourite-hotel', {
+          hotelId: props.hotelId,
+        });
+        if (data.status === 200)
+          console.log('add hotel to favourite list successfully.');
+      } else {
+        // if event === true => already added
+
+        const { data } = await apiInstance.post('user/remove-favourite-hotel', {
+          hotelId: props.hotelId,
+        });
+        if (data.status === 200)
+          console.log('remove hotel from favourite list successfully.');
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      alert('Something went wrong. Please try again later.');
+    }
+  };
+
   return (
     <ButtonGroup>
-      <Favorite className="ant-btn" content="Save" />
+      {isLoggedIn && props.author.id !== user.id && (
+        <Favorite
+          className="ant-btn"
+          content="Save"
+          alreadyInFavourite={alreadyInFavourite}
+          onClick={handleAddHotelToFavourite}
+        />
+      )}
       <Dropdown
         placement="bottomRight"
         overlay={() => <SocialShareMenu {...props} />}
@@ -75,7 +124,7 @@ const SideButtons = props => {
 };
 
 const TopBar = props => {
-  const { title, shareURL, author, media } = props;
+  const { title, shareURL, author, media, hotelId } = props;
   return (
     <TobBarWrapper>
       <Sticky innerZ={9999} top={82} activeClass="isSticky">
@@ -87,6 +136,7 @@ const TopBar = props => {
               author={author}
               title={title}
               shareURL={shareURL}
+              hotelId={hotelId}
             />
           }
         />

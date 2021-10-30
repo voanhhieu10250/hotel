@@ -2,22 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Heading from '@iso/ui/Heading/Heading';
 import TextLink from '@iso/ui/TextLink/TextLink';
-import { FaWifi, FaCarAlt, FaSwimmer, FaAirFreshener } from 'react-icons/fa';
+import {
+  FaWifi,
+  FaCarAlt,
+  FaSwimmer,
+  FaAirFreshener,
+  FaBed,
+} from 'react-icons/fa';
 import IconCard from '@hotel/components/IconCard/IconCard';
 import AmenitiesWrapper, { AmenitiesArea } from './Amenities.style';
 import { TextButton } from '../SinglePageView.style';
 import { Element } from 'react-scroll';
 
-const Amenities = ({ titleStyle, linkStyle }) => {
+const Amenities = ({ titleStyle, linkStyle, amenities }) => {
   return (
     <Element name="amenities" className="Amenities">
       <AmenitiesWrapper>
         <Heading as="h2" content="Amenities" {...titleStyle} />
         <AmenitiesArea>
-          <IconCard icon={<FaWifi />} title="Free wifi" />
-          <IconCard icon={<FaCarAlt />} title="Free parking" />
-          <IconCard icon={<FaSwimmer />} title="Free pool" />
-          <IconCard icon={<FaAirFreshener />} title="Air Freshener" />
+          {amenities.wifiAvailability && (
+            <IconCard icon={<FaWifi />} title="Free wifi" />
+          )}
+          {amenities.parkingAvailability && (
+            <IconCard icon={<FaCarAlt />} title="Free parking" />
+          )}
+          {amenities.poolAvailability && (
+            <IconCard icon={<FaSwimmer />} title="Free pool" />
+          )}
+          {amenities.airCondition && (
+            <IconCard icon={<FaAirFreshener />} title="Air Freshener" />
+          )}
+          {amenities.extraBedFacility && (
+            <IconCard icon={<FaBed />} title="Extra bed facility" />
+          )}
         </AmenitiesArea>
         <TextButton>
           <TextLink link="#1" content="Show all amenities" {...linkStyle} />

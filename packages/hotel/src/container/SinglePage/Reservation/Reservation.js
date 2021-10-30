@@ -5,20 +5,30 @@ import Heading from '@iso/ui/Heading/Heading';
 import Text from '@iso/ui/Text/Text';
 import TextLink from '@iso/ui/TextLink/TextLink';
 import RenderReservationForm from './RenderReservationForm';
+import { PRICING_PLAN_PAGE } from '../../../settings/constant';
 
-const CardHeader = ({ priceStyle, pricePeriodStyle, linkStyle }) => {
+const CardHeader = ({
+  priceStyle,
+  pricePeriodStyle,
+  linkStyle,
+  price,
+  agentId,
+}) => {
+  const textPrice = price && !isNaN(Number(price)) ? price : '162';
+
   return (
     <Fragment>
       <Heading
         content={
           <Fragment>
-            $162 <Text as="span" content="/ night" {...pricePeriodStyle} />
+            ${textPrice}{' '}
+            <Text as="span" content="/ night" {...pricePeriodStyle} />
           </Fragment>
         }
         {...priceStyle}
       />
       <TextLink
-        link="/profile/contact"
+        link={`/profile/${agentId}/contact`}
         content="Contact Agent"
         {...linkStyle}
       />
@@ -26,15 +36,16 @@ const CardHeader = ({ priceStyle, pricePeriodStyle, linkStyle }) => {
   );
 };
 
-export default function Reservation() {
+export default function Reservation({ price, agentId, hotelId }) {
   return (
     <Card
       className="reservation_sidebar"
-      header={<CardHeader />}
-      content={<RenderReservationForm />}
+      header={<CardHeader price={price} agentId={agentId} />}
+      content={<RenderReservationForm hotelId={hotelId} />}
       footer={
         <p>
-          Special offers available. <TextLink to="/#1" content="See details" />
+          Special offers available.{' '}
+          <TextLink to={PRICING_PLAN_PAGE} content="See details" />
         </p>
       }
     />

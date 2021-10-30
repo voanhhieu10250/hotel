@@ -34,7 +34,7 @@ export const TwitterShare = props => {
   return (
     <Popover content="Twitter">
       <div className="twitter">
-        <TwitterShareButton url={shareURL} title={title} via={author}>
+        <TwitterShareButton url={shareURL} title={title} via={author.firstName}>
           <FaTwitter /> Twitter
         </TwitterShareButton>
       </div>
@@ -62,7 +62,7 @@ export const LinkedInShare = props => {
 
 export const PinterestShare = props => {
   const { shareURL, title, media } = props;
-  const mediaForPinterest = media ? media[0].url : [];
+  const mediaForPinterest = media && media.length > 0 ? media[0].url : [];
   return (
     <Popover content="Pinterest">
       <div className="pinterest">

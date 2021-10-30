@@ -41,7 +41,7 @@ export const MapDataProcessing = compose(
   withScriptjs,
   withGoogleMap
 )(props => {
-  const { multiple } = props;
+  const { multiple, location } = props;
   return (
     <Fragment>
       {multiple && multiple === true ? (
@@ -65,8 +65,8 @@ export const MapDataProcessing = compose(
         <GoogleMap
           defaultZoom={8}
           defaultCenter={{
-            lat: 40.706877,
-            lng: -74.011265,
+            lat: location && location.lat ? location.lat : 41.8858,
+            lng: location && location.lng ? location.lng : -75.7223,
           }}
         >
           <HotelMapMarkerSingle {...props} />
