@@ -1,6 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-import { IoIosStar, IoIosStarOutline, IoIosArrowDown } from 'react-icons/io';
+import {
+  IoIosStar,
+  IoIosStarOutline,
+  IoIosArrowDown,
+  IoIosStarHalf,
+} from 'react-icons/io';
 import Row from '@iso/ui/Antd/Grid/Row';
 import CommentCard from '@iso/ui/CommentCard/CommentCard';
 import Col from '@iso/ui/Antd/Grid/Col';
@@ -41,11 +46,13 @@ const CommentBox = props => {
 const Review = props => {
   const {
     ratingCount,
+    rating,
     reviews,
     statusHeadingStyle,
     filterHeadingStyle,
     ratingLabelStyle,
     ratingCountStyle,
+    hotelId,
   } = props;
 
   const [state, setState] = useState({
@@ -73,6 +80,28 @@ const Review = props => {
     console.log(`checked = ${e.target.checked}`);
   };
 
+  const renderStarList = rate => {
+    let totalStars = 5;
+    let starList = [];
+    let redundant = rate - Math.trunc(rate);
+    let tempArrLength = Math.trunc(rate);
+
+    while (tempArrLength > 0) {
+      starList.push(<IoIosStar />);
+      tempArrLength--;
+    }
+
+    while (starList.length < totalStars) {
+      if (redundant === 0 && starList.length < totalStars)
+        starList.push(<IoIosStarOutline />);
+      if (redundant !== 0 && starList.length < totalStars) {
+        starList.push(<IoIosStarHalf />);
+        redundant = 0;
+      }
+    }
+    return starList;
+  };
+
   return (
     <Element name="reviews" className="reviews">
       <ReviewWrapper>
@@ -82,11 +111,7 @@ const Review = props => {
               content={`${ratingCount} Reviews`}
               {...statusHeadingStyle}
             />
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
-            <IoIosStar />
+            {renderStarList(rating)}
           </RatingStatus>
           <RatingSearch>
             <Search
@@ -105,7 +130,7 @@ const Review = props => {
               wrapClassName="review_modal"
             >
               <ModalTitle>Write your review here</ModalTitle>
-              <ReviewForm />
+              <ReviewForm hotelId={hotelId} />
             </Modal>
           </RatingSearch>
         </HeaderSection>

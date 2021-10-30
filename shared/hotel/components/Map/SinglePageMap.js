@@ -6,14 +6,17 @@ import MakerImage from './hotelMapMarker.png';
 const SingleMapDisplay = props => {
   let locationArray = [];
   const { location, infoWindowToggle, isOpen, markerIndex } = props;
-
+  console.log(location);
   locationArray.push({
-    lat: location && location.location.lat,
-    lng: location && location.location.lng,
+    lat: location && location.lat,
+    lng: location && location.lng,
     id: location && location.id,
     title: location && location.title,
-    thumbUrl: location && location.image.thumb_url,
-    formattedAddress: location && location.location.formattedAddress,
+    thumbUrl:
+      location && location.images.length > 0
+        ? location.images[0].url
+        : '/placeholder/hotel_thumb.jpg',
+    formattedAddress: location && location.formattedAddress,
     price: location && location.price,
     rating: location && location.rating,
     ratingCount: location && location.ratingCount,

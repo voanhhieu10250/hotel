@@ -17,7 +17,7 @@ const Description = ({
   titleStyle,
   locationMetaStyle,
   contentStyle,
-  linkStyle,
+  // linkStyle,
 }) => {
   return (
     <Element name="overview" className="overview">

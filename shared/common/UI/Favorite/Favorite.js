@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import useToggle from './useToggle';
 import FavoriteWrapper from './Favorite.style';
 
-const Favorite = ({ className, content, onClick }) => {
+const Favorite = ({
+  className,
+  content,
+  onClick,
+  alreadyInFavourite = false,
+}) => {
   // use toggle hooks
-  const [toggleValue, toggleHandler] = useToggle(false);
+  const [toggleValue, toggleHandler] = useToggle(alreadyInFavourite);
 
   // Add all classs to an array
   const addAllClass = ['favorite'];

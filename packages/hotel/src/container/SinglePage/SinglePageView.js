@@ -19,6 +19,8 @@ import SinglePageWrapper, { PostImage } from './SinglePageView.style';
 import PostImageGallery from './ImageGallery/ImageGallery';
 import useDataApi from '@iso/lib/hooks/useDataApi';
 import isEmpty from 'lodash/isEmpty';
+import { Redirect } from 'react-router';
+// import { apiInstance } from "../../context/AuthProvider";
 
 const SinglePage = ({ match }) => {
   const { href } = useLocation();
@@ -26,24 +28,35 @@ const SinglePage = ({ match }) => {
   // useWindowSize hook
   const { width } = useWindowSize();
 
-  let url = '/data/hotel-single.json';
-  if (!match.params.slug) {
-    url += match.params.slug;
-  }
-  const { data, loading } = useDataApi(url);
-  if (isEmpty(data) || loading) return <Loader />;
+  // let url = "/data/hotel-single.json";
+
+  // const fetchHotelDetail = async () => {
+  //   try {
+  //     const { data } = await apiInstance.get(`/hotel/${match.params.slug}}`);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  console.log(match.params.slug);
+  const { data, loading, error } = useDataApi(`hotel/${match.params.slug}`);
+  if ((!data && loading) || (!data && !error && !loading)) return <Loader />;
+  if ((!data || !data.content) && !loading) return <Redirect to="/404" />;
+
+  console.log(data);
   const {
     reviews,
     rating,
     ratingCount,
     price,
     title,
-    gallery,
+    images,
     location,
     content,
     amenities,
-    author,
-  } = data[0];
+    agent,
+    id,
+  } = data.content;
 
   return (
     <SinglePageWrapper>
@@ -67,7 +80,7 @@ const SinglePage = ({ match }) => {
           closable={false}
         >
           <Fragment>
-            <PostImageGallery />
+            <PostImageGallery images={images} />
             <Button
               onClick={() => setIsModalShowing(false)}
               className="image_gallery_close"
@@ -85,7 +98,13 @@ const SinglePage = ({ match }) => {
         </Modal>
       </PostImage>
 
-      <TopBar title={title} shareURL={href} author={author} media={gallery} />
+      <TopBar
+        title={title}
+        shareURL={href}
+        author={agent}
+        media={images}
+        hotelId={id}
+      />
 
       <Container>
         <Row gutter={30} id="reviewSection" style={{ marginTop: 30 }}>
@@ -98,7 +117,16 @@ const SinglePage = ({ match }) => {
               ratingCount={ratingCount}
             />
             <Amenities amenities={amenities} />
-            <Location location={data[0]} />
+            <Location
+              location={{
+                ...location,
+                title,
+                images,
+                price,
+                rating,
+                ratingCount,
+              }}
+            />
           </Col>
           <Col xl={8}>
             {width > 1200 ? (
@@ -108,7 +136,7 @@ const SinglePage = ({ match }) => {
                 top={202}
                 bottomBoundary="#reviewSection"
               >
-                <Reservation />
+                <Reservation price={price} agentId={agent.id} hotelId={id} />
               </Sticky>
             ) : (
               <BottomReservation
@@ -116,6 +144,8 @@ const SinglePage = ({ match }) => {
                 price={price}
                 rating={rating}
                 ratingCount={ratingCount}
+                agentId={agent.id}
+                hotelId={id}
               />
             )}
           </Col>
@@ -126,6 +156,7 @@ const SinglePage = ({ match }) => {
               reviews={reviews}
               ratingCount={ratingCount}
               rating={rating}
+              hotelId={id}
             />
           </Col>
           <Col xl={8} />

@@ -7,7 +7,7 @@ import {
 } from '@iso/ui/Antd/AntdInputWithFormik';
 import {
   RadioGroupComp,
-  PhotoUploadComponent,
+  // PhotoUploadComponent,
   CheckBoxComp,
 } from './ReviewFormComponent';
 import Row from '@iso/ui/Antd/Grid/Row';
@@ -21,7 +21,7 @@ import ReviewFormWrapper, {
   Description,
   TripType,
   RadioGroup,
-  UploadPhoto,
+  // UploadPhoto,
 } from './RendarReviewForm.style';
 import { MdStar } from 'react-icons/md';
 
@@ -29,10 +29,11 @@ export default function RenderReviewForm({
   handleSubmit,
   values,
   submitCount,
+  loading,
 }) {
   console.log(values, 'values');
   return (
-    <ReviewFormWrapper>
+    <ReviewFormWrapper $loading={loading}>
       <Form className="form-container" onSubmit={handleSubmit}>
         <Field
           component={AntRate}
@@ -243,7 +244,7 @@ export default function RenderReviewForm({
           submitCount={submitCount}
           hasFeedback
         />
-        <UploadPhoto>
+        {/* <UploadPhoto>
           <Label> Do You have photos to share? (Optional)</Label>
           <Field
             component={PhotoUploadComponent}
@@ -252,7 +253,7 @@ export default function RenderReviewForm({
             hasFeedback
             rows={4}
           />
-        </UploadPhoto>
+        </UploadPhoto> */}
         <Label>Terms and Conditions</Label>
         <Field
           component={CheckBoxComp}

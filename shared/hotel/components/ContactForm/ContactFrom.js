@@ -1,15 +1,10 @@
 import React from 'react';
 import { Field, Form } from 'formik';
-import {
-  AntInput,
-  AntTextArea,
-  AntCheckbox,
-} from '@iso/ui/Antd/AntdInputWithFormik';
+import { AntInput, AntTextArea } from '@iso/ui/Antd/AntdInputWithFormik';
 import Button from '@iso/ui/Antd/Button/Button';
 import Row from '@iso/ui/Antd/Grid/Row';
 import Col from '@iso/ui/Antd/Grid/Col';
-import HtmlLabel from '@iso/ui/HtmlLabel/HtmlLabel';
-import FormWrapper, { FieldWrapper } from './ContactForm.style';
+import FormWrapper from './ContactForm.style';
 
 const ContactForm = ({ values, submitCount, handleSubmit }) => (
   <FormWrapper>
@@ -51,20 +46,6 @@ const ContactForm = ({ values, submitCount, handleSubmit }) => (
           />
         </Col>
       </Row>
-
-      <FieldWrapper className="field-container">
-        <Field
-          component={AntCheckbox}
-          id="cookieConsent"
-          name="cookieConsent"
-          submitCount={submitCount}
-          value={values.cookieConsent}
-        />
-        <HtmlLabel
-          htmlFor="cookieConsent"
-          content="Save my email in the broweser for the next time I contact"
-        />
-      </FieldWrapper>
 
       <Button
         className="signin-btn"

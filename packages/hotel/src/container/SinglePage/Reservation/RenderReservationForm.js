@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '@iso/ui/Antd/Button/Button';
 import HtmlLabel from '@iso/ui/HtmlLabel/HtmlLabel';
 import DatePickerRange from '@iso/ui/DatePicker/ReactDates';
@@ -10,8 +10,12 @@ import ReservationFormWrapper, {
   RoomGuestWrapper,
   ItemWrapper,
 } from './Reservation.style.js';
+import moment from 'moment';
+import { apiInstance, AuthContext } from '../../../context/AuthProvider.js';
 
-const RenderReservationForm = () => {
+const RenderReservationForm = ({ hotelId }) => {
+  const { user, loggedIn } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   // form state
   const [formState, setFormState] = useState({
     startDate: null,
@@ -49,6 +53,7 @@ const RenderReservationForm = () => {
 
   // handle date data on update
   const updateSearchDataFunc = value => {
+    console.log(value);
     setFormState({
       ...formState,
       startDate: value.setStartDate,
@@ -57,15 +62,54 @@ const RenderReservationForm = () => {
   };
 
   // handleSubmit data
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    alert(
-      `Start Date: ${formState.startDate}\nEnd Date: ${formState.endDate}\nRooms: ${formState.room}\nGuests: ${formState.guest}`
+    if (!loggedIn || !user) {
+      alert('Please signin first then do the booking later !');
+      return;
+    }
+    const startDate = moment.utc(formState.startDate).format();
+    const endDate = moment.utc(formState.endDate).format();
+    const bookerContact =
+      user.cellNumber === 'adminsecret' ? '0987654321' : user.cellNumber;
+
+    const confirmResult = window.confirm(
+      `CONFIRM AND PAY:\n\nYour Eamil: ${user.email}\nYour Contact: ${bookerContact}\nStart Date: ${formState.startDate}\nEnd Date: ${formState.endDate}\nRooms: ${formState.room}\nGuests: ${formState.guest}`
     );
+    if (!confirmResult) return;
+    else {
+      setLoading(true);
+      try {
+        const { data } = await apiInstance.post('booking/add-booking', {
+          bookerContact: bookerContact,
+          bookerEmail: user.email,
+          endDate: endDate,
+          guests: formState.guest,
+          hotelId: hotelId,
+          message: '',
+          rooms: formState.room,
+          startDate: startDate,
+        });
+        console.log(data);
+        if (data.status === 201) {
+          alert(
+            'We have received your information. We will contact with you to confirm your payment soon.'
+          );
+        }
+      } catch (error) {
+        console.log(error);
+        alert('Something went wrong. Please try again later.');
+      }
+      setLoading(false);
+    }
   };
 
   return (
-    <ReservationFormWrapper className="form-container" onSubmit={handleSubmit}>
+    <ReservationFormWrapper
+      $loading={loading}
+      className="form-container"
+      onSubmit={handleSubmit}
+    >
       <FieldWrapper>
         <HtmlLabel htmlFor="dates" content="Dates" />
         <DatePickerRange

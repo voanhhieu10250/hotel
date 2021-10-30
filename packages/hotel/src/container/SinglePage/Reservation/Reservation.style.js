@@ -1,10 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 const ReservationFormWrapper = styled.form`
   padding: 0 30px;
   @media only screen and (max-width: 375px) {
     padding: 0 15px;
   }
+  ${props =>
+    props.$loading &&
+    css`
+      cursor: progress;
+    `}
 `;
 
 export const FieldWrapper = styled.div`

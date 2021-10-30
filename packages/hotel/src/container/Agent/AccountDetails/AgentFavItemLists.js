@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionGrid from '@hotel/components/SectionGrid/SectionGrid.cra';
 import { HotelPostGridLoader } from '@iso/ui/ContentLoader/ContentLoader';
-import useDataApi from '@iso/lib/hooks/useDataApi';
 import { SINGLE_POST_PAGE } from '../../../settings/constant';
 
-const AgentFavItemLists = () => {
-  const { data, loadMoreData, loading } = useDataApi('/data/agent.json');
-  const favourite_post =
-    data[0] && data[0].favourite_post ? data[0].favourite_post : [];
+const AgentFavItemLists = ({ data, loading }) => {
+  const [limit, setLimit] = useState(6);
+  const favourite_post = data.favouritePost.slice(0, limit);
 
   return (
     <SectionGrid
@@ -15,10 +13,10 @@ const AgentFavItemLists = () => {
       data={favourite_post}
       loading={loading}
       limit={6}
-      totalItem={favourite_post.length}
+      totalItem={data.favouritePost.length}
       columnWidth={[1 / 2, 1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 6]}
       placeholder={<HotelPostGridLoader />}
-      handleLoadMore={loadMoreData}
+      handleLoadMore={() => setLimit(limit + 8)}
     />
   );
 };

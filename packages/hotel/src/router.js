@@ -85,17 +85,6 @@ const routes = [
     }),
   },
   {
-    path: AGENT_PROFILE_PAGE,
-    component: Loadable({
-      loader: () =>
-        import(
-          /* webpackChunkName: "AgentDetailsViewPage" */ './container/Agent/AccountDetails/AgentDetailsViewPage'
-        ),
-      loading: Loading,
-      modules: ['AgentDetailsViewPage'],
-    }),
-  },
-  {
     path: PRIVACY_PAGE,
     component: Loadable({
       loader: () =>
@@ -111,6 +100,17 @@ const routes = [
         import(/* webpackChunkName: "Pricing" */ './container/Pricing/Pricing'),
       loading: Loading,
       modules: ['Pricing'],
+    }),
+  },
+  {
+    path: AGENT_PROFILE_PAGE + '/:id',
+    component: Loadable({
+      loader: () =>
+        import(
+          /* webpackChunkName: "AgentDetailsViewPage" */ './container/Agent/AccountDetails/AgentDetailsViewPage'
+        ),
+      loading: Loading,
+      modules: ['AgentDetailsViewPage'],
     }),
   },
 ];

@@ -7,7 +7,7 @@ import {
   LISTING_POSTS_PAGE,
   PRIVACY_PAGE,
   PRICING_PLAN_PAGE,
-  AGENT_PROFILE_PAGE,
+  // AGENT_PROFILE_PAGE,
 } from '../../../settings/constant';
 
 const FooterMenu = () => {
@@ -25,9 +25,9 @@ const FooterMenu = () => {
       <Menu.Item key="3">
         <NavLink to={`${PRIVACY_PAGE}`}>Privacy</NavLink>
       </Menu.Item>
-      <Menu.Item key="4">
+      {/* <Menu.Item key="4">
         <NavLink to={`${AGENT_PROFILE_PAGE}`}>Agent</NavLink>
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   );
 };

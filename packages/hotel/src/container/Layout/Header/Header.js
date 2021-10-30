@@ -33,7 +33,7 @@ const AvatarImg = `http://s3.amazonaws.com/redqteam.com/isomorphic-reloaded-imag
 export default withRouter(function Header({ location }) {
   const [{ searchVisibility }] = useContext(LayoutContext);
   // auth context
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, user } = useContext(AuthContext);
 
   // sidebar and responsive control state
   const [state, setState] = useState(false);
@@ -108,7 +108,7 @@ export default withRouter(function Header({ location }) {
                   <AvatarInfo>
                     <Text as="h3" content="Nova Scotia" />
                     <TextLink
-                      link={AGENT_PROFILE_PAGE}
+                      link={AGENT_PROFILE_PAGE + '/' + user?.id}
                       content="View Profile"
                     />
                   </AvatarInfo>

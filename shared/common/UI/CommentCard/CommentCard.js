@@ -8,18 +8,20 @@ export default class App extends React.Component {
   render() {
     const { singleReview, authorRating } = this.props;
     const reviewAuthorFirstName = singleReview
-      ? singleReview.reviewAuthorFirstName
+      ? singleReview.author.firstName
       : '';
     const reviewAuthorLastName = singleReview
-      ? singleReview.reviewAuthorLastName
+      ? singleReview.author.lastName
       : '';
     const authorName = reviewAuthorFirstName + ' ' + reviewAuthorLastName;
-    const content = singleReview ? singleReview.reviewText : '';
-    const reviewTitle = singleReview ? singleReview.reviewTitle : '';
+    const content = singleReview ? singleReview.text : '';
+    const reviewTitle = singleReview ? singleReview.title : '';
     const commentDate = singleReview ? singleReview.reviewDate : '';
     const postTime = new Date(commentDate).getTime();
-    const authorAvatar = singleReview ? singleReview.reviewAuthorPic.url : '';
-    const reviewRating = singleReview ? singleReview.reviewFields : '';
+    const authorAvatar =
+      singleReview && singleReview.author.profilePic
+        ? singleReview.author.profilePic.url
+        : '/placeholder/profilepic.png';
 
     return (
       <div className="comment-area">
@@ -41,7 +43,7 @@ export default class App extends React.Component {
                       'dddd, MMMM Do YYYY, h:mm:ss a'
                     )}
                   >
-                    <span>Reviewd - {moment(postTime).fromNow()}</span>
+                    <span>Reviewed - {moment(postTime).fromNow()}</span>
                   </Popover>
                 </div>
               </div>
@@ -55,20 +57,34 @@ export default class App extends React.Component {
             <p>{content}</p>
           </div>
           <div className="comment-rating">
-            {reviewRating && reviewRating.length !== 0
-              ? reviewRating.map((singleReviewRating, i) => {
-                  return (
-                    <div className="rating-widget" key={i}>
-                      <Rating
-                        key={i}
-                        rating={singleReviewRating.rating}
-                        ratingFieldName={singleReviewRating.ratingFieldName}
-                        type="individual"
-                      />
-                    </div>
-                  );
-                })
-              : ''}
+            <div className="rating-widget">
+              <Rating
+                rating={singleReview.serviceRating}
+                ratingFieldName="Service"
+                type="individual"
+              />
+            </div>
+            <div className="rating-widget">
+              <Rating
+                rating={singleReview.roomRating}
+                ratingFieldName="Room"
+                type="individual"
+              />
+            </div>
+            <div className="rating-widget">
+              <Rating
+                rating={singleReview.cleannessRating}
+                ratingFieldName="Cleanness"
+                type="individual"
+              />
+            </div>
+            <div className="rating-widget">
+              <Rating
+                rating={singleReview.foodRating}
+                ratingFieldName="Food"
+                type="individual"
+              />
+            </div>
           </div>
         </div>
       </div>

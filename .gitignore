@@ -11,3 +11,5 @@ gulpfile.js
 production.zip
 server-build
 prod-build
+
+**/.env.production

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { IoIosArrowForward } from 'react-icons/io';
 import Loader from '@hotel/components/Loader/Loader';
@@ -8,9 +8,10 @@ import TextLink from '@iso/ui/TextLink/TextLink';
 import SectionTitle from '@hotel/components/SectionTitle/SectionTitle';
 import ImageCard from '@hotel/components/ImageCard/ImageCard';
 import GlideCarousel, { GlideSlide } from '@iso/ui/GlideCarousel/GlideCarousel';
-import useDataApi from '@iso/lib/hooks/useDataApi';
+// import useDataApi from '@iso/lib/hooks/useDataApi';
 import { LISTING_POSTS_PAGE } from '../../../settings/constant';
 import LocationWrapper, { CarouselSection } from './Location.style';
+// import { apiInstance } from '../../../context/AuthProvider';
 const carouselOptions = {
   type: 'carousel',
   perView: 6,
@@ -45,7 +46,26 @@ const carouselOptions = {
 };
 
 const LocationGrid = () => {
-  const { data } = useDataApi('/data/location.json');
+  // const { data } = useDataApi('/data/location.json');
+  // const { data } = useDataApi('location');
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchLocations();
+  }, []);
+
+  const fetchLocations = async () => {
+    try {
+      const res = await fetch('/data/location.json', {
+        method: 'GET',
+      });
+      const resdata = await Promise.resolve(res.json());
+      console.log(resdata);
+      setData(resdata);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <LocationWrapper>

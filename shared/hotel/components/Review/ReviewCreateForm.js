@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import RenderReviewForm from './RenderReviewForm';
-import Notification from '@iso/ui/Antd/Notification/Notification';
+import {
+  apiInstance,
+  AuthContext,
+} from '../../../../packages/hotel/src/context/AuthProvider';
 
 const initialValues = {
   reviewTitle: '',
@@ -21,7 +24,6 @@ const initialValues = {
   indoorPool: '',
   isTrendy: '',
   isRomantic: '',
-  reviewPhotos: [],
 };
 
 const ReviewValidationSchema = () => {
@@ -38,88 +40,71 @@ const ReviewValidationSchema = () => {
       'Terms and condition acceptence  is Required!'
     ),
     quant: Yup.string()
-      .oneOf(['yes', 'no', 'not-there'])
+      .oneOf(['yes', 'no', 'not-sure'])
       .required('Please select this information'),
     roomViews: Yup.string()
-      .oneOf(['yes', 'no', 'not-there'])
+      .oneOf(['yes', 'no', 'not-sure'])
       .required('Please select this information'),
     indoorPool: Yup.string()
-      .oneOf(['yes', 'no', 'not-there'])
+      .oneOf(['yes', 'no', 'not-sure'])
       .required('Please select this information'),
     isTrendy: Yup.string()
-      .oneOf(['yes', 'no', 'not-there'])
+      .oneOf(['yes', 'no', 'not-sure'])
       .required('Please select this information'),
     isRomantic: Yup.string()
-      .oneOf(['yes', 'no', 'not-there'])
+      .oneOf(['yes', 'no', 'not-sure'])
       .required('Please select this information'),
   });
 };
 
-const handleSubmit = formProps => {
-  const {
-    reviewTitle,
-    reviewDetails,
-    tripType,
-    travelTime,
-    ratings,
-    roomsRatings,
-    serviceRatings,
-    cleanlinessRatings,
-    foodRatings,
-    tips,
-    termsAndCondition,
-    quant,
-    roomViews,
-    indoorPool,
-    isTrendy,
-    isRomantic,
-  } = formProps;
+export default ({ hotelId }) => {
+  const { user, loggedIn } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
-  // alert(`Selected Data:
-  //   Review Title : ${reviewTitle}
-  //   Review Details : ${reviewDetails}
-  //   Trip Type : ${tripType}
-  //   Travel Time : ${travelTime}
-  //   Ratings : ${ratings}
-  //   Room Ratings : ${roomsRatings}
-  //   Service Ratings : ${serviceRatings}
-  //   Cleanness : ${cleanlinessRatings}
-  //   Food Rating : ${foodRatings}
-  //   Tips for other : ${tips}
-  //   Is this a quaint hotel? : ${quant}
-  //   Does This Hotel offer rooms with great views? : ${roomViews}
-  //   Does This Hotel have an indoor pool? : ${indoorPool}
-  //   Is this a trendy hotel? : ${isTrendy}
-  //   Is this a romantic hotel? : ${isRomantic}
-  //   Agreed on Terms and Condition? : ${termsAndCondition}`);
+  const handleSubmit = async formProps => {
+    if (!loggedIn || !user) {
+      alert('Please signin first then do the booking later !');
+      return;
+    }
+    if (loading) return;
+    const {
+      reviewTitle,
+      reviewDetails,
+      roomsRatings,
+      serviceRatings,
+      cleanlinessRatings,
+      foodRatings,
+    } = formProps;
 
-  Notification.open({
-    message: 'Review Submission Form',
-    description: `Selected Data: \n
-    Review Title: ${reviewTitle} \n
-    Review Details : ${reviewDetails} \n
-    Trip Type : ${tripType} \n
-    Travel Time : ${travelTime} \n
-    Ratings : ${ratings} \n
-    Room Ratings : ${roomsRatings} \n
-    Service Ratings : ${serviceRatings} \n
-    Cleanness : ${cleanlinessRatings} \n
-    Food Rating : ${foodRatings} \n
-    Tips for other : ${tips} \n
-    Is this a quaint hotel ? : ${quant} \n
-    Does This Hotel offer rooms with great views ? : ${roomViews} \n
-    Does This Hotel have an indoor pool ? : ${indoorPool} \n
-    Is this a trendy hotel ? : ${isTrendy} \n
-    Is this a romantic hotel ? : ${isRomantic} \n
-    Agreed on Terms and Condition ? : ${termsAndCondition} \n`,
-  });
+    setLoading(true);
+    try {
+      const { data } = await apiInstance.post('review/create-new-review', {
+        cleannessRating: cleanlinessRatings,
+        foodRating: foodRatings,
+        hotelId: hotelId,
+        roomRating: roomsRatings,
+        serviceRating: serviceRatings,
+        text: reviewDetails,
+        title: reviewTitle,
+      });
+      console.log(data);
+      if (data.status === 201) {
+        alert('Review success !');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Something went wrong. Please try again later.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      render={props => <RenderReviewForm {...props} loading={loading} />}
+      validationSchema={ReviewValidationSchema}
+    />
+  );
 };
-
-export default () => (
-  <Formik
-    initialValues={initialValues}
-    onSubmit={handleSubmit}
-    render={RenderReviewForm}
-    validationSchema={ReviewValidationSchema}
-  />
-);
