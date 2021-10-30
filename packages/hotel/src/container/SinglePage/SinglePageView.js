@@ -18,7 +18,7 @@ import TopBar from './TopBar/TopBar';
 import SinglePageWrapper, { PostImage } from './SinglePageView.style';
 import PostImageGallery from './ImageGallery/ImageGallery';
 import useDataApi from '@iso/lib/hooks/useDataApi';
-import isEmpty from 'lodash/isEmpty';
+import singlePostBgImg from '@hotel/assets/images/single-post-bg.jpg';
 import { Redirect } from 'react-router';
 // import { apiInstance } from "../../context/AuthProvider";
 
@@ -60,7 +60,7 @@ const SinglePage = ({ match }) => {
 
   return (
     <SinglePageWrapper>
-      <PostImage>
+      <PostImage bgImage={images.length > 0 ? images[0].url : singlePostBgImg}>
         <Button
           type="primary"
           onClick={() => setIsModalShowing(true)}

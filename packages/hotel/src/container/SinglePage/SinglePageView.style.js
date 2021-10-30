@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
-import singlePostBgImg from '@hotel/assets/images/single-post-bg.jpg';
 
 const SinglePageWrapper = styled.div`
   padding-bottom: 56px;
@@ -209,7 +208,7 @@ export const ButtonGroup = styled.div`
 `;
 
 export const PostImage = styled.div`
-  background-image: url(${singlePostBgImg});
+  background-image: url(${props.bgImage});
   background-position: center center;
   background-size: cover;
   height: 600px;
