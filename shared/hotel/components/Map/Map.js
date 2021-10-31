@@ -48,8 +48,10 @@ export const MapDataProcessing = compose(
         <GoogleMap
           defaultZoom={7}
           defaultCenter={{
-            lat: 41.8858,
-            lng: -75.7223,
+            lat:
+              location && location[0] && location.lat ? location.lat : 41.8858,
+            lng:
+              location && location[0] && location.lng ? location.lng : -75.7223,
           }}
         >
           <MarkerClusterer

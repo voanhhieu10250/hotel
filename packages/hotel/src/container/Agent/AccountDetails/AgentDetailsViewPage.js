@@ -13,7 +13,6 @@ import Container from '@iso/ui/UI/Container/Container';
 import Image from '@iso/ui/Image/Image';
 import Heading from '@iso/ui/Heading/Heading';
 import Text from '@iso/ui/Text/Text';
-import { ProfilePicLoader } from '@iso/ui/ContentLoader/ContentLoader';
 import Loader from '@hotel/components/Loader/Loader';
 import AgentItemLists from './AgentItemLists';
 import AgentFavItemLists from './AgentFavItemLists';
@@ -22,7 +21,6 @@ import {
   ADD_HOTEL_PAGE,
   AGENT_PROFILE_FAVOURITE,
   AGENT_PROFILE_CONTACT,
-  HOME_PAGE,
 } from '../../../settings/constant';
 import AgentDetailsPage, {
   BannerSection,

@@ -18,14 +18,14 @@ import ListingWrapper, {
 } from './Listing.style';
 
 export default function Listing({ location, history }) {
-  // let url = '/data/hotel.json';
+  let url = 'search';
   const [showMap, setShowMap] = useState(false);
 
-  // if (location.search) {
-  //   url += location.search;
-  // }
-  // console.log('location.search', location.search);
-  const { data, loading, loadMoreData } = useDataApi('hotel');
+  if (location.search) {
+    url += location.search;
+  }
+
+  const { data, loading, loadMoreData } = useDataApi(url);
   let columnWidth = [1 / 2, 1 / 2, 1 / 3, 1 / 4, 1 / 5, 1 / 5, 1 / 6];
 
   if (showMap) {
@@ -69,12 +69,14 @@ export default function Listing({ location, history }) {
             totalItem={data?.content?.totalRecordCount}
             loading={loading}
             limit={data?.content?.pageSize}
-            handleLoadMore={loadMoreData}
+            handleLoadMore={() =>
+              loadMoreData(url + `&page=${data?.content?.pageNumber + 1}`)
+            }
             placeholder={<HotelPostGridLoader />}
           />
         </PostsWrapper>
 
-        {showMap && <ListingMap />}
+        {showMap && <ListingMap data={data} loading={loading} />}
       </Fragment>
     </ListingWrapper>
   );

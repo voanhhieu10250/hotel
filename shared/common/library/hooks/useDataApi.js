@@ -37,6 +37,11 @@ function dataFetchReducer(state, action) {
         loading: true,
         error: false,
       };
+    case 'FETCH_LOADING':
+      return {
+        ...state,
+        loading: true,
+      };
     case 'FETCH_SUCCESS':
       return {
         data: action.payload,
@@ -49,10 +54,19 @@ function dataFetchReducer(state, action) {
         loading: false,
         error: true,
       };
-    case 'LOAD_MORE':
+    case 'ADD_MORE':
       return {
         ...state,
-        data: [...state.data, ...action.payload],
+        data: {
+          ...action.payload,
+          content: {
+            ...action.payload.content,
+            records: [
+              ...state.data.content.records,
+              ...action.payload.content.records,
+            ],
+          },
+        },
         loading: false,
         error: false,
       };
@@ -95,9 +109,14 @@ const useDataApi = (initialUrl, initialData = null) => {
     };
   }, [url]);
 
-  const loadMoreData = () => {
-    // dispatch({ type: 'FETCH_INIT' });
-    dispatch({ type: 'LOAD_MORE' });
+  const loadMoreData = async newUrl => {
+    dispatch({ type: 'FETCH_LOADING' });
+    try {
+      const result = await SuperFetch(newUrl);
+      dispatch({ type: 'ADD_MORE', payload: result });
+    } catch (error) {
+      dispatch({ type: 'FETCH_FAILURE', payload: initialData });
+    }
   };
 
   const doFetch = url => {

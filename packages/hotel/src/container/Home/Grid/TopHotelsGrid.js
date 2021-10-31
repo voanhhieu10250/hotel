@@ -13,7 +13,7 @@ import {
 } from '../../../settings/constant';
 const TopHotelsGrid = () => {
   // const { data, loading } = useDataApi('/data/top-hotel.json');
-  const { data, loading } = useDataApi('hotel');
+  const { data, loading } = useDataApi('hotel/best-rated-hotel');
   const { width } = useWindowSize();
 
   let posts = data?.content?.records || [];

@@ -26,7 +26,6 @@ export function getUrl(location) {
   return urlData;
 }
 export function setStateToUrl(state) {
-  console.log(state, 'state');
   let urlData = {};
   for (const key in state) {
     if (state.hasOwnProperty(key)) {
@@ -39,21 +38,34 @@ export function setStateToUrl(state) {
           urlData[key] = data && data.length ? data.join() : null;
           break;
         case 'amenities':
-          urlData[key] =
-            state[key] && state[key].length ? state[key].join() : null;
+          // console.log(state[key]);
+
+          if (state[key] && state[key].length) {
+            state[key].forEach(value => {
+              if (value === 'wifi_availabitity')
+                urlData['wifiAvailability'] = true;
+              if (value === 'parking_availabitity')
+                urlData['parkingAvailability'] = true;
+              if (value === 'pool_availabitity')
+                urlData['poolAvailability'] = true;
+              if (value === 'air_condition') urlData['airCondition'] = true;
+              if (value === 'extra_bed_facility')
+                urlData['extraBedFacility'] = true;
+            });
+          }
           break;
         case 'room':
           if (state[key]) {
-            urlData[key] = state[key] ? state[key] : 0;
+            urlData['bedRoom'] = state[key] ? state[key] : 0;
           } else {
-            urlData[key] = '';
+            urlData['bedRoom'] = '';
           }
           break;
         case 'guest':
           if (state[key]) {
-            urlData[key] = state[key] ? state[key] : 0;
+            urlData['guestRoom'] = state[key] ? state[key] : 0;
           } else {
-            urlData[key] = '';
+            urlData['guestRoom'] = '';
           }
           break;
         case 'property':
@@ -61,15 +73,20 @@ export function setStateToUrl(state) {
             state[key] && state[key].length ? state[key].join() : null;
           break;
         case 'price':
-          urlData[key] =
-            state[key] && state[key].length ? state[key].join() : null;
+          if (state[key] && state[key].length) {
+            urlData['lowPrice'] = state[key][0];
+            urlData['highPrice'] = state[key][1];
+          } else urlData[key] = null;
           break;
         case 'location':
-          if (state[key] && state[key].lat) {
-            urlData[`${key}_lat`] = state[key].lat;
-          }
-          if (state[key] && state[key].lng) {
-            urlData[`${key}_lng`] = state[key].lng;
+          // if (state[key] && state[key].lat) {
+          //   urlData[`${key}_lat`] = state[key].lat;
+          // }
+          // if (state[key] && state[key].lng) {
+          //   urlData[`${key}_lng`] = state[key].lng;
+          // }
+          if (state[key] && state[key].city) {
+            urlData['city'] = state[key].city;
           }
           break;
         case 'reset':

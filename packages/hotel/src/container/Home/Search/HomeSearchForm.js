@@ -73,12 +73,17 @@ const HomeSearch = ({ history }) => {
   const goToSearchPage = () => {
     let tempLocation = [];
     const mapData = mapValue ? MapDataHelper(mapValue) : [];
+    console.log(mapData);
     mapData &&
       mapData.map((singleMapData, i) => {
         return tempLocation.push({
           formattedAddress: singleMapData ? singleMapData.formattedAddress : '',
           lat: singleMapData ? singleMapData.lat.toFixed(3) : null,
           lng: singleMapData ? singleMapData.lng.toFixed(3) : null,
+          city:
+            singleMapData && singleMapData.city !== ''
+              ? encodeURIComponent(singleMapData.city.toLowerCase())
+              : encodeURIComponent(singleMapData.country_long.toLowerCase()),
         });
       });
     const location = tempLocation ? tempLocation[0] : {};

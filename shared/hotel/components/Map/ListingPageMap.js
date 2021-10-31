@@ -13,7 +13,10 @@ const HotelMapMarkerCluster = props => {
       const lat = parseFloat(location[i].location.lat);
       const lng = parseFloat(location[i].location.lng);
       const title = location[i].title;
-      const thumbUrl = location[i].image.thumb_url;
+      const thumbUrl =
+        location[i].images.length > 0
+          ? location[i].images[0].url
+          : '/placeholder/hotel_thumb.jpg';
       const formattedAddress = location[i].location.formattedAddress;
       const price = location[i].price;
       const rating = location[i].rating;

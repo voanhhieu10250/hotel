@@ -100,7 +100,7 @@ export default function SectionGrid({
 }
 
 SectionGrid.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   totalItem: PropTypes.number,
   columnWidth: PropTypes.oneOfType([
     PropTypes.string,

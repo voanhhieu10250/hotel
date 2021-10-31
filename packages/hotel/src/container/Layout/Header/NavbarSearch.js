@@ -18,8 +18,13 @@ const NavbarSearch = props => {
     if (!isEmpty(mapData) && mapData.length !== 0) {
       mapData.forEach(singleMapData =>
         tempLocation.push({
+          formattedAddress: singleMapData ? singleMapData.formattedAddress : '',
           lat: singleMapData ? singleMapData.lat.toFixed(3) : null,
           lng: singleMapData ? singleMapData.lng.toFixed(3) : null,
+          city:
+            singleMapData && singleMapData.city !== ''
+              ? encodeURIComponent(singleMapData.city.toLowerCase())
+              : encodeURIComponent(singleMapData.country_long.toLowerCase()),
         })
       );
     }

@@ -26,7 +26,7 @@ import AvatarImg from '@hotel/assets/images/profileImage.jpg';
 import { AuthContext } from '../../../context/AuthProvider';
 
 const AccountSettingNavLink = props => {
-  const { match, user } = props;
+  const { match } = props;
 
   return (
     <SidebarMenuWrapper>

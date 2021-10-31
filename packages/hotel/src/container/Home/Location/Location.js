@@ -11,7 +11,7 @@ import GlideCarousel, { GlideSlide } from '@iso/ui/GlideCarousel/GlideCarousel';
 // import useDataApi from '@iso/lib/hooks/useDataApi';
 import { LISTING_POSTS_PAGE } from '../../../settings/constant';
 import LocationWrapper, { CarouselSection } from './Location.style';
-// import { apiInstance } from '../../../context/AuthProvider';
+import { apiInstance } from '../../../context/AuthProvider';
 const carouselOptions = {
   type: 'carousel',
   perView: 6,
@@ -45,6 +45,13 @@ const carouselOptions = {
   },
 };
 
+const randomImage = num => {
+  if (num) return `/placeholder/random-location-${num}.jpg`;
+
+  return `/placeholder/random-location-${Math.floor(Math.random() * 11) +
+    1}.jpg`;
+};
+
 const LocationGrid = () => {
   // const { data } = useDataApi('/data/location.json');
   // const { data } = useDataApi('location');
@@ -56,12 +63,12 @@ const LocationGrid = () => {
 
   const fetchLocations = async () => {
     try {
-      const res = await fetch('/data/location.json', {
-        method: 'GET',
-      });
-      const resdata = await Promise.resolve(res.json());
-      console.log(resdata);
-      setData(resdata);
+      const {
+        data: { content },
+      } = await apiInstance.get('location/countHotel');
+      console.log(content);
+
+      setData(content.length > 22 ? content.slice(0, 23) : content);
     } catch (error) {
       console.log(error);
     }
@@ -87,10 +94,12 @@ const LocationGrid = () => {
                 {data.map((post, index) => (
                   <GlideSlide key={index}>
                     <ImageCard
-                      link="listing"
-                      imageSrc={post.locationImage.url}
+                      link={`/listing?city=${encodeURIComponent(
+                        post.city.toLowerCase()
+                      )}`}
+                      imageSrc={randomImage((index + 1) % 11)}
                       title={post.city}
-                      meta={`${post.numberOfPost} Hotels`}
+                      meta={`${post.numberOfHotel} Hotels`}
                     />
                   </GlideSlide>
                 ))}
