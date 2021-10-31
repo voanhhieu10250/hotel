@@ -29,8 +29,10 @@ import StepperWrapper, {
   Description,
 } from '@hotel/components/Listing/AddListing.style';
 import { Alert } from 'antd';
+import { apiInstance } from '../../context/AuthProvider';
+import { useHistory } from 'react-router';
+import { SINGLE_POST_PAGE } from '../../settings/constant';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const required = value => (value ? undefined : 'Required');
 
 const formValue = {
@@ -88,16 +90,125 @@ const QuantityInput = ({ field, form }) => {
 const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
   const [locationError, setLocationError] = useState(false);
   const [locationFieldBlured, setLocationFieldBlured] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   return (
-    <StepperWrapper className="hotel-submission-form">
+    <StepperWrapper className="hotel-submission-form" $loading={loading}>
       <FormStepper
         initialValues={formValue}
-        onSubmit={(values, actions) => {
-          sleep(300).then(() => {
-            window.alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          });
+        onSubmit={async (values, actions) => {
+          console.log(values);
+          if (loading) return;
+          try {
+            setLoading(true);
+            // add amenities
+            const { data: amenitiesData } = await apiInstance.post(
+              'hotel/amenities/add-amenities',
+              {
+                airCondition: values.airCondition === 'yes' ? true : false,
+                bedRoom: values.beds,
+                extraBedFacility: values.extraBed === 'yes' ? true : false,
+                guestRoom: values.guest,
+                parkingAvailability: values.parking === 'yes' ? true : false,
+                poolAvailability:
+                  values.poolAvailability === 'yes' ? true : false,
+                wifiAvailability:
+                  values.wifiAvailability === 'free' ? true : false,
+              }
+            );
+
+            if (amenitiesData.status !== 201) {
+              alert(
+                'Something went wrong with amenities. Please try again later !'
+              );
+              setLoading(false);
+              actions.setSubmitting(false);
+              return;
+            }
+
+            // add location
+            const { data: locationData } = await apiInstance.post(
+              'location/add-location',
+              {
+                city: values.location.city,
+                countryLong: values.location.country_long,
+                countryShort: values.location.country_short,
+                formattedAddress: values.location.formattedAddress,
+                lat: values.location.lat,
+                lng: values.location.lng,
+                numberOfPost: 0,
+                stateLong: values.location.state_long,
+                stateShort: values.location.state_short,
+                zipcode: values.location.zipcode,
+              }
+            );
+
+            if (locationData.status !== 201) {
+              alert(
+                'Something went wrong with location. Please try again later !'
+              );
+              setLoading(false);
+              actions.setSubmitting(false);
+              return;
+            }
+
+            // add hotel
+            const nowTime = new Date().getTime();
+            const genSlug =
+              values.hotelName.replace(/[^A-Za-z0-9]/g, '-') + `-${nowTime}`;
+
+            const { data: hotelData } = await apiInstance.post(
+              'hotel/add-hotel',
+              {
+                amenitiesId: amenitiesData.content.id,
+                condition: 'Very Good',
+                contactNumber: values.contactNumber,
+                content: values.hotelDetails,
+                locationId: locationData.content.id,
+                negotiable: true,
+                price: values.priceParNight,
+                ratingCount: 0,
+                slug: genSlug,
+                status: 'PUBLISH',
+                termsAndCondition: 'Have a nice trip.',
+                title: values.hotelName,
+              }
+            );
+
+            if (hotelData.status !== 201) {
+              alert(
+                'Something went wrong with hotel data. Please try again later !'
+              );
+              setLoading(false);
+              actions.setSubmitting(false);
+              return;
+            }
+
+            // hotel images
+            const { data: hotelImageData } = await apiInstance.post(
+              'hotel-images/create-multiple-hotel-images',
+              {
+                hotelId: hotelData.content.id,
+                listUrl: values.hotelPhotos,
+              }
+            );
+
+            if (hotelImageData.status !== 201) {
+              alert('Something went wrong when upload hotel images.');
+              setLoading(false);
+              actions.setSubmitting(false);
+              return;
+            }
+
+            alert('Create hotel success.');
+            history.push(`${SINGLE_POST_PAGE}/${hotelData.content.slug}`);
+          } catch (error) {
+            console.log(error);
+            alert('Something went wrong.');
+          }
+          setLoading(false);
+          actions.setSubmitting(false);
         }}
       >
         <FormStepper.Page>
@@ -111,7 +222,7 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
                 component={AntInput}
                 name="hotelName"
                 type="text"
-                label="Hotel Name"
+                label="Hotel Name / Title"
                 validate={required}
                 placeholder="Write your hotel name here"
                 hasFeedback

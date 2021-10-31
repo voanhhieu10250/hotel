@@ -56,11 +56,20 @@ const SinglePage = ({ match }) => {
     amenities,
     agent,
     id,
+    coverPic,
   } = data.content;
 
   return (
     <SinglePageWrapper>
-      <PostImage bgImage={images.length > 0 ? images[0].url : singlePostBgImg}>
+      <PostImage
+        bgImage={
+          coverPic
+            ? coverPic.url
+            : images.length > 0
+            ? images[0].url
+            : singlePostBgImg
+        }
+      >
         <Button
           type="primary"
           onClick={() => setIsModalShowing(true)}

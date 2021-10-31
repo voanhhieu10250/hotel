@@ -2,51 +2,55 @@ import React from 'react';
 import { IoIosCloudUpload } from 'react-icons/io';
 import { Upload, message } from 'antd';
 import styled from 'styled-components';
+import { apiInstance } from '../../../../packages/hotel/src/context/AuthProvider';
 
 const DraggerWrapper = styled.div``;
 
 const { Dragger } = Upload;
 
-const photos = [
-  {
-    uid: '1',
-    name: 'hotel-1.png',
-    status: 'done',
-    url:
-      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '2',
-    name: 'hotel-2.png',
-    status: 'done',
-    url:
-      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '3',
-    name: 'hotel-3.png',
-    status: 'done',
-    url:
-      'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-];
-
 const DragAndDropUploader = ({ onUploadChange }) => {
   const props = {
     name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    defaultFileList: photos,
+    customRequest: async ({ file, onSuccess, onError }) => {
+      const fmt = new FormData();
+      fmt.append('file', file);
+      try {
+        const { data } = await apiInstance.post(
+          'file/upload/hotel-images',
+          fmt
+        );
+        onSuccess(data, file);
+      } catch (error) {
+        onError(error);
+      }
+    },
     onChange(info) {
       const { status } = info.file;
+      console.log(info);
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
-        onUploadChange(info.fileList);
+        onUploadChange(info.fileList.map(item => item.response.content));
       }
       if (status === 'done') {
         message.success(`${info.file.name} photo uploaded successfully.`);
       } else if (status === 'error') {
         message.error(`${info.file.name} photo upload failed.`);
+      }
+    },
+    onRemove: async file => {
+      // console.log(file);
+      try {
+        await apiInstance.delete('file/delete', {
+          data: {
+            fileName: file.response.content.slice(
+              file.response.content.indexOf('hotel-images')
+            ),
+          },
+        });
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
     },
   };

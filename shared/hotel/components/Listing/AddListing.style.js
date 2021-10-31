@@ -1,7 +1,12 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
 
 const StepperWrapper = styled.div`
+  ${props =>
+    props.$loading &&
+    css`
+      cursor: progress;
+    `}
   display: flex;
   min-height: 100vh;
   flex-direction: column;

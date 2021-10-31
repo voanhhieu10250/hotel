@@ -1,6 +1,5 @@
 import React from 'react';
 import Upload from '../Antd/Upload/Upload';
-import Icon from '../Antd/Icon/Icon';
 import Modal from '../Antd/Modal/Modal';
 import { FaCamera } from 'react-icons/fa';
 import { ImageUpload } from './imageUploader.style';

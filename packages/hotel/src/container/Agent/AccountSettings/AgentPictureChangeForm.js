@@ -1,6 +1,5 @@
 import React from 'react';
 import ImageUploader from '@iso/ui/ImageUploader/ImageUploader';
-import Button from '@iso/ui/Antd/Button/Button';
 import Heading from '@iso/ui/Heading/Heading';
 import { AgentPictureUploader, FormTitle } from './AccountSettings.style';
 
