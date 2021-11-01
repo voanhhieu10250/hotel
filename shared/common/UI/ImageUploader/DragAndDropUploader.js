@@ -41,6 +41,7 @@ const DragAndDropUploader = ({ onUploadChange, value }) => {
     onRemove: async file => {
       // console.log(file);
       try {
+        if (!file.response.content) return true;
         await apiInstance.delete('file/delete', {
           data: {
             fileName: file.response.content.slice(
