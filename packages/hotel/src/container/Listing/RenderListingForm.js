@@ -33,7 +33,12 @@ import { apiInstance } from '../../context/AuthProvider';
 import { useHistory } from 'react-router';
 import { SINGLE_POST_PAGE } from '../../settings/constant';
 
-const required = value => (value ? undefined : 'Required');
+const required = value =>
+  value
+    ? value.length >= 255
+      ? 'Too much! The limit is 254'
+      : undefined
+    : 'Required';
 
 const formValue = {
   hotelName: '',
