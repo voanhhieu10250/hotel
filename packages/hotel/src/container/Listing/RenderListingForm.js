@@ -190,7 +190,7 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
               'hotel-images/create-multiple-hotel-images',
               {
                 hotelId: hotelData.content.id,
-                listUrl: values.hotelPhotos,
+                listUrl: values.hotelPhotos.map(item => item.response.content),
               }
             );
 

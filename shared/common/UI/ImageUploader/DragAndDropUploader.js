@@ -8,9 +8,10 @@ const DraggerWrapper = styled.div``;
 
 const { Dragger } = Upload;
 
-const DragAndDropUploader = ({ onUploadChange }) => {
+const DragAndDropUploader = ({ onUploadChange, value }) => {
   const props = {
     name: 'file',
+    defaultFileList: value,
     customRequest: async ({ file, onSuccess, onError }) => {
       const fmt = new FormData();
       fmt.append('file', file);
@@ -29,7 +30,7 @@ const DragAndDropUploader = ({ onUploadChange }) => {
       console.log(info);
       if (status !== 'uploading') {
         console.log(info.file, info.fileList);
-        onUploadChange(info.fileList.map(item => item.response.content));
+        onUploadChange(info.fileList);
       }
       if (status === 'done') {
         message.success(`${info.file.name} photo uploaded successfully.`);
