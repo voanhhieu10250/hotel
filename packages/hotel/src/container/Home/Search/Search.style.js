@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { themeGet } from '@styled-system/theme-get';
-import bannerBg from '@hotel/assets/images/banner-bg.jpg';
+import bannerBg from '@hotel/assets/images/airbnb-banner.jpg';
 
 const BannerWrapper = styled.div`
   width: 100%;
