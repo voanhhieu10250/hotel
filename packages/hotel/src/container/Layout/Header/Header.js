@@ -28,7 +28,6 @@ import HeaderWrapper, {
 
 // Dummy images
 import DemoLogo from '@hotel/assets/images/logo-alt.svg';
-const AvatarImg = `http://s3.amazonaws.com/redqteam.com/isomorphic-reloaded-image/profilepic.png`;
 
 export default withRouter(function Header({ location }) {
   const [{ searchVisibility }] = useContext(LayoutContext);
@@ -49,6 +48,7 @@ export default withRouter(function Header({ location }) {
   // check header type
   const headerType = location.pathname === '/' ? 'transparent' : 'default';
 
+  const AvatarImg = user?.profilePic?.url || '/placeholder/profilepic.png';
   return (
     <HeaderWrapper>
       <Sticky top={0} innerZ={10001} activeClass="isHeaderSticky">
