@@ -23,8 +23,18 @@ const NavbarSearch = props => {
           lng: singleMapData ? singleMapData.lng.toFixed(3) : null,
           city:
             singleMapData && singleMapData.city !== ''
-              ? encodeURIComponent(singleMapData.city.toLowerCase())
-              : encodeURIComponent(singleMapData.country_long.toLowerCase()),
+              ? encodeURIComponent(
+                  singleMapData.city
+                    .toLowerCase()
+                    .replace('thành phố', '')
+                    .trim()
+                )
+              : encodeURIComponent(
+                  singleMapData.country_long
+                    .toLowerCase()
+                    .replace('thành phố', '')
+                    .trim()
+                ),
         })
       );
     }
