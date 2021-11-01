@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 import Axios from 'axios';
 
 export const AuthContext = React.createContext();
@@ -28,36 +28,36 @@ const addItem = (key, value = '') => {
   /**
    *  Using the local storage code....
    */
-  if (key) localStorage.setItem(key, value);
+  // if (key) localStorage.setItem(key, value);
 
   /**
    *  Using the Cookies code...
    */
-  // if (key) Cookies.set(key, value, { expires: 7 });
+  if (key) Cookies.set(key, value, { expires: 7 });
 };
 
 const clearItem = key => {
   /**
    *  Using the local storage code....
    */
-  localStorage.removeItem(key);
+  // localStorage.removeItem(key);
 
   /**
    *  Using the Cookies code...
    */
-  // Cookies.remove(key);
+  Cookies.remove(key);
 };
 
 const isValidToken = () => {
   /**
    *  Using the local storage code....
    */
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
 
   /**
    *  Using the Cookies code...
    */
-  // const token = Cookies.get('token');
+  const token = Cookies.get('token');
   // JWT decode & check token validity & expiration.
   if (token) {
     setApiAuthorization(token);
