@@ -181,7 +181,7 @@ const AuthProvider = props => {
     setError(null);
     setLoading(true);
     try {
-      const { data } = await apiInstance.post('user/register', {
+      const { data } = await apiInstance.post('auth/register', {
         email,
         username,
         password,

@@ -14,7 +14,7 @@ import {
 
 const LuxaryHotelsGrid = () => {
   // const { data, loading } = useDataApi('/data/hotel.json');
-  const { data, loading } = useDataApi('hotel/FindHotelByMostBooking');
+  const { data, loading } = useDataApi('hotel/top-booked-hotel');
   const { width } = useWindowSize();
 
   let posts = data?.content?.records;

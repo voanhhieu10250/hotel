@@ -16,10 +16,7 @@ const DragAndDropUploader = ({ onUploadChange, value }) => {
       const fmt = new FormData();
       fmt.append('file', file);
       try {
-        const { data } = await apiInstance.post(
-          'file/upload/hotel-images',
-          fmt
-        );
+        const { data } = await apiInstance.post('file/upload', fmt);
         onSuccess(data, file);
       } catch (error) {
         onError(error);

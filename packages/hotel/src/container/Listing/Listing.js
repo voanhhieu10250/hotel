@@ -70,7 +70,11 @@ export default function Listing({ location, history }) {
             loading={loading}
             limit={data?.content?.pageSize}
             handleLoadMore={() =>
-              loadMoreData(url + `&page=${data?.content?.pageNumber + 1}`)
+              loadMoreData(
+                url +
+                  `${url.length === 6 ? '?' : '&'}page=${data?.content
+                    ?.pageNumber + 1}`
+              )
             }
             placeholder={<HotelPostGridLoader />}
           />
