@@ -109,7 +109,7 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
             setLoading(true);
             // add amenities
             const { data: amenitiesData } = await apiInstance.post(
-              'hotel/amenities/add-amenities',
+              'amenities/add-amenities',
               {
                 airCondition: values.airCondition === 'yes' ? true : false,
                 bedRoom: values.beds,
@@ -192,7 +192,7 @@ const RenderCreateOrUpdateForm = ({ fieldLabel }) => {
 
             // hotel images
             const { data: hotelImageData } = await apiInstance.post(
-              'hotel-images/create-multiple-hotel-images',
+              'hotel-images/add-hotel-images',
               {
                 hotelId: hotelData.content.id,
                 listUrl: values.hotelPhotos

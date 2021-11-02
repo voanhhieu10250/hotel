@@ -69,17 +69,17 @@ const PostGrid = ({
       if (event) {
         // if event === false => not add yet
 
-        const { data } = await apiInstance.post('user/add-favourite-hotel', {
-          hotelId: id,
-        });
+        const { data } = await apiInstance.post(
+          `user/add-favourite-hotel/${id}`
+        );
         if (data.status === 200)
           console.log('add hotel to favourite list successfully.');
       } else {
         // if event === true => already added
 
-        const { data } = await apiInstance.post('user/remove-favourite-hotel', {
-          hotelId: id,
-        });
+        const { data } = await apiInstance.delete(
+          `user/remove-favourite-hotel/${id}`
+        );
         if (data.status === 200)
           console.log('remove hotel from favourite list successfully.');
       }
