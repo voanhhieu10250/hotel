@@ -175,6 +175,23 @@ export default function AgentDetailsViewPage(props) {
         Progressing...
       </div>
     );
+  if (data && !loading && data.content.id !== Number(id)) {
+    window.location.reload();
+    return (
+      <div
+        style={{
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'white',
+        }}
+      >
+        Progressing...
+      </div>
+    );
+  }
   if (error && !loading) return <Redirect to="/404" />;
 
   return (
