@@ -42,16 +42,25 @@ export const MapDataProcessing = compose(
   withGoogleMap
 )(props => {
   const { multiple, location } = props;
+  console.log({
+    lat: location && location[0] && location[0].lat ? location[0].lat : 41.8858,
+    lng:
+      location && location[0] && location[0].lng ? location[0].lng : -75.7223,
+  });
   return (
     <Fragment>
       {multiple && multiple === true ? (
         <GoogleMap
-          defaultZoom={7}
+          defaultZoom={14}
           defaultCenter={{
             lat:
-              location && location[0] && location.lat ? location.lat : 41.8858,
+              location && location[0] && location[0].lat
+                ? location[0].lat
+                : 41.8858,
             lng:
-              location && location[0] && location.lng ? location.lng : -75.7223,
+              location && location[0] && location[0].lng
+                ? location[0].lng
+                : -75.7223,
           }}
         >
           <MarkerClusterer

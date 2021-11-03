@@ -87,15 +87,15 @@ const Review = props => {
     let tempArrLength = Math.trunc(rate);
 
     while (tempArrLength > 0) {
-      starList.push(<IoIosStar />);
+      starList.push(<IoIosStar key={Math.random()} />);
       tempArrLength--;
     }
 
     while (starList.length < totalStars) {
       if (redundant === 0 && starList.length < totalStars)
-        starList.push(<IoIosStarOutline />);
+        starList.push(<IoIosStarOutline key={Math.random()} />);
       if (redundant !== 0 && starList.length < totalStars) {
-        starList.push(<IoIosStarHalf />);
+        starList.push(<IoIosStarHalf key={Math.random()} />);
         redundant = 0;
       }
     }
